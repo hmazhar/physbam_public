@@ -11,6 +11,10 @@
 #include <PhysBAM_Tools/Parsing/STRING_UTILITIES.h>
 #include <PhysBAM_Tools/Read_Write/Utilities/READ_WRITE_FUNCTIONS.h>
 #include <PhysBAM_Tools/Utilities/EXCEPTIONS.h>
+
+#include <sys/types.h>	//Fix for GCC 4.7
+#include <unistd.h>     //Fix for GCC 4.7
+
 namespace PhysBAM{
 
 namespace FILE_UTILITIES{
