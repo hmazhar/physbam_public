@@ -1,0 +1,4 @@
+This directory contains all the data type which are approved to be arguments for PhysBAM kernel functions -- as well as necessary auxilliary dependencies to remove external dependencies.
+
+The approved data types are:
+  (List of data types goes here)

@@ -1,0 +1,12 @@
+//#####################################################################
+// Copyright 2008.
+// This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+//#####################################################################
+
+This Repository contains the geometry and related algorithms used by PhysBAM.  It should not depend on any other components of PhysBAM except PhysBAM_Tools.
+
+Methods heavily duplicated between PhysBAM_Rendering and PhysBAM_OpenGL should be *considered* for candidacy here.  For example, tesselation (the generation of a triangulated surface from other
+geometry) may well be considered a technique for rendering, but it is general enough to warrent placement in PhysBAM_Geometry.
+
+From Ron:
+  PhysBAM_Geometry will contain all of our geometry.  Obviously Triangulated surfaces, all the connectivity, solids particles, etc.

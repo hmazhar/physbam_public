@@ -1,0 +1,37 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Grids_Uniform
+Synopsis  : Uniform Cartesian lattices in 1D-3D, with associated iterators
+##################################################
+
+DESCRIPTION
+-----------
+
+Class GRID<VECTOR<T,n> > (n=1,2,3) defines a Cartesian (axis-aligned) lattice in n dimensions, with uniform spacing in the steps along each axis (although
+different steps for different axes are allowed). The GRID classes for 2D and 3D can be considered as tensor-product lattices of a 1-dimensional grid. As such,
+the GRID class for the n-dimensional space implicitly defines the domain of a volumetric field, sampled on the respective cartesian lattice; the values of such
+sampled fields can be stored in the respective ARRAYS_nD class (defined in the directory PhysBAM_Tools/Grids_Uniform_Arrays).
+
+As a discretization class, GRID is essentially a map between an n-tuple of integer indices, to a point in the n-dimensional space. There are two types of
+GRIDs, determining how this map is defined:
+
+ - REGULAR grids: Integer grid indices are mapped to the *nodes* of a Cartesian lattice. For example, in the 2-dimensional grid spanning the rectangle
+   [a,b]x[c,d], subdivided into m x n cells, the integer pair (1,1) maps to the point (a,c) while integer indices (m,n) map to position (b,d).
+ - MAC grids: Integer grid indices are mapped to the *centers* of the corresponding cell in the lattice. Thus, in the 3-dimensional grid defined over the
+   rectangle [a,b]x[c,d]x[e,f], subdivided into m x n x p cells, the integer grid index (1,1,1) maps to the location (a+dx/2,c+dy/2,e+dz/2), where dx=1/m, dy=1/n
+   and dz=1/p.
+
+GRID classes define the primitives of "nodes", "faces" and "cells" over their extent. Each set of primitives can be individually indexed; in particular, faces
+normal to each one of the main axes are distinguished. Classes UNIFORM_GRID_ITERATOR_#x# (templatized over the dimension of the space) implement iterators over
+primitives of type #x#, on a GRID of the same dimensionality. These iterators can be localized to the boundary of the grid, the interior of the grid, or the
+"ghost" region which extends past the base bounding rectangle of GRID, for a given number of additional "ghost" cells.
+
+TODO: BLOCK_UNIFORM.h: Describe this class
+TODO: GRID_POLICY.h: Describe this class (after providing descriptions for the adaptive grids)
+
+
+

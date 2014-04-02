@@ -1,0 +1,110 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Math_Tools
+Synopsis  : Frequently used mathematical operations.
+##################################################
+
+DESCRIPTION
+-----------
+
+The Math_Tools directory provides common mathematical operations and other simple combinatorial tools and constructs. Most of the functionality implemented in the
+Math_Tools directory is exposed as free functions, lightweight classes, or preprocessor macros. These constructs are intended to produce very lightweight code (if
+not resolved at compile time, altogether) which can be easily inlined by the compiler. The headers provided are grouped in the following categories:
+
+Extrema-related functions:
+
+  min.h
+  max.h
+  argmin.h
+  argmax.h
+  minmag.h
+  maxmag.h
+  minabs.h
+  maxabs.h
+  Componentwise_Min_Max.h
+
+  These files provide lightweight and inlineable implementations of min/max operations on two or more arguments. Variants are provided for the argument of the
+  extremum, and extrema in absolute value or magnitude of the arguments. Componentwise_Min/Max operates on types that define the notion of a component-wise
+  extremum.
+
+Powers/exponentation:
+
+  sqr.h
+  cube.h
+  pow.h
+  cbrt.h
+  Inverse.h
+
+  Implementations of common powers and roots, avoiding library function calls whenever possible. Inverse.h treats integers in a special way, respecting the
+  distinct semantics of integer division.
+
+Intervals:
+
+  INTERVAL.h
+  RANGE.h
+  clamp.h
+
+  INTERVAL corresponds to a 1-dimensional interval, over reals or integers. RANGE, is a higher dimensional interval, i.e. a Cartesian product of 1D intervals.
+
+Compile-time constants:
+
+  constants.h
+  ZERO.h
+  ONE.h
+
+  constants.h defines several common mathematical and engineering constants. ZERO/ONE provide storage-less compile-time representations of the values 0 & 1 and
+  are useful in overloading special-case behaviors when used as function or operator arguments.
+
+Combinatorics:
+
+  choice.h
+  permutation.h
+  cyclic_shift.h
+  exchange.h
+  exchange_sort.h
+
+  The headers provide free functions for combinatorial manipulation of an ordered set. permutation.h provides unrolled implementations of the permutation space
+  of 3 and 4 elements. exchange_sort is a Bubble Sort for tiny sets.
+
+Integer functions:
+
+  FACTORIAL.h
+  integer_log.h
+
+  FACTORIAL is statically evaluated at compile time. integer_log assumes 32-bit integers
+
+Floating point functions:
+
+  Is_NaN.h
+  ulp.h   
+
+  ulp(x) is the absolute value of the least significant bit in the IEEE754 representation of x. ulp(x) is an upper bound for the round-off error incurred by
+  converting an absolute result to IEEE754 precision.
+
+Indeterminate forms:
+
+  Robust_Arithmetic.h
+  Robust_Functions.h
+
+  These headers provide safe-guarded versions of operations that may lead to indeterminate forms, such as division by zero and operations involving infinities.
+
+Hashing:
+
+  Hash.h
+
+  Implements a fast pseudo-random hash of primitive types. The functionality in this header is extensively used in all hashable PhysBAM data types.
+
+Miscellaneous:
+
+  wrap.h: integer modulo operation, with guaranteed non-negative result
+  sign.h: signum function
+  givens_rotate.h: 2D rotation using precomputed sine/cosine functions (Givens Rotation)
+  rint.h: Round to integer
+
+TODO: Add explanation for Minmod.h
+
+

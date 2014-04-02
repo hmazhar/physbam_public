@@ -1,0 +1,25 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Ordinary_Differential_Equations
+Synopsis  : Euler, Runge Kutta (2 and 4), Adams Bashforth and Adams Bashforth Moulton time stepping schemes for ODEs.
+##################################################
+
+DESCRIPTION
+-----------
+
+Templatized implementations of Euler step higher order explicit numerical approximations to ODEs. These manage the state of multiple copies of arrays needed for basic Euler step conception of the higher order methods. Implementations are templatized to work with arrays storing spatial variables (e.g. the velocities on a uniform 3D grid in a fluid simulation). These classes allow for generic treatment of the temporal terms arising in various partial differential equations.
+
+ODE_SOLVER:
+Templatized time stepping functions for Euler, RK2, RK4, Adams Bashforth and Adams Bashforth Moulton schemes. The class NONLINEAR_FUNCTION (also templatized) allows for generic definition of right hand side source term in the ODE.
+
+RUNGEKUTTA:
+RK timestepping for templatized data defined over a grid (including special treatment of boundary conditions).
+
+EULER_STEP_PARTICLES:
+Euler stepping and RK2 stepping for array based data (including potential treatment of staggered variable based partial definition of quantities that must be interpolated prior to time stepping). 
+
+

@@ -1,0 +1,10 @@
+//#####################################################################
+// Copyright 2008.
+// This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+//#####################################################################
+
+This Repository contains the opengl used by PhysBAM.  It can (and should) depend on PhysBAM_Tools and PhysBAM_Geometry.
+
+From Ron:
+  The point is that these (PhysBAM_Rendering and PhysBAM_OpenGL) are only here to visualize the geometry - and any algorithms such as Intersections or Tessellation should be moved into
+  PhysBAM_Geometry.

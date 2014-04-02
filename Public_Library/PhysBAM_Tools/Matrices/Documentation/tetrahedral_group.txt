@@ -1,0 +1,52 @@
+The tetrahedral group is the group of orientation-preserving symmetries
+of the regular tetrahedron.  It has size 12.  Given an specific regular 
+tetrahedron in 3D, it also acts as a rotation group on R^3.  This can be 
+conveniently described via quaternions.  The details of the following 
+explanation were taken from
+
+    http://www.math.sunysb.edu/~tony/bintet/index.html
+
+Identify R^3 with the space spanned by i,j,k in the space of quaternions
+H.  Consider the regular tetrahedron given by the following vertices:
+   A=-i-j-k, B=-i+j+k, C=i-j+k, D=i+j-k
+Note that these are half the vertices of the standard cube of side length 2.
+The 12 elements of the tetrahedral group are
+    e: the identity element
+    i,j,k: 180 rotations about the coordinate axes i,j,k
+    a,b,c,d: 120 degree positive rotations about the ray from the origin through 
+        A,B,C,D, respectively
+    a2,b2,c2,d2: the squares of the previous elements
+Quaternion representations of these elements are
+    e: 1
+    i,j,k: themselves
+    a,b,c,d: a=(1/2)(1+A), and respectively for b,c,d
+These letter names are also used as static members in the class.
+
+There are several other groups with important relationships with the tetrahedral
+group, including the binary tetrahedral group, the octahedral group, and the
+alternating group on four elements.
+
+The binary tetrahedral group is the group of quaternion representations of the
+tetrahedral group elements, and forms a double covering of the tetrahedral group.
+Specifically, each tetrahedral group element is represented by the quaternion
+given above and its negation.
+
+The octahedral group is the group of orientation preserving symmetries of the
+octahedron or cube, or equivalently the symmetries of oriented axis-aligned
+space.  It has size 24.  Since we our tetrahedron vertices are also vertices 
+of the standard cube, each tetrahedral group element is naturally an element of 
+the tetrahedral group.  The other elements of the octahedral group are those
+that map our standard tetrahedron to the other choice of regular tetrahedron
+vertices, starting with A'=i+j+k.  These include the 90 degree rotations about
+any axis.
+
+Since "most" of the structure of the octahedral group is contained in the
+tetrahedral group, it can sometimes be used to represent orientations of axis
+aligned objects with fewer possibilities (12 instead of 24).  For example,
+the 6 possible distinguishable orientations of bcc tetrahedra can be given by
+tetrahedral group rotations of a standard bcc tet.  Since there is no subgroup
+of the tetrahedral group of size 6, this is the minimal group capable of
+representing bcc orientations.
+
+Finally, since the tetrahedron is also the complete graph on 4 nodes, the
+tetrahedral group is naturally isomorphic to the alternating group on 4 elements.

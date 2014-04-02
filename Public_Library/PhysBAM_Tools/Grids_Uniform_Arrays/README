@@ -1,0 +1,42 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Grids_Uniform_Arrays
+Synopsis  : Storage classes for quantities sampled on uniform Cartesian lattices
+##################################################
+
+DESCRIPTION
+-----------
+
+This directory defines classes that store arrays of variables sampled on uniform Cartesian lattices, and are consequently closely related with the Cartesian lattice class
+GRID defined in PhysBAM_Tools/Grids_Uniform.
+
+Classes ARRAYS_nD (n=1,2,3, defined in the respective header ARRAYS_nD.h) implement n-dimensional arrays of variables on a rectangular lattice. On a regular GRID object
+(that is, not one that represents a MAC grid), we can associate the nodes of the grid with the values stored in an ARRAYS_nD object with the same size and dimension. Class
+ARRAYS_ND_BASE contains the common functionality to ARRAYS_nD types of all dimensions.
+
+Classes FACE_ARRAYS_nD store variables sampled at the face centers of a uniform grid. Since an n-dimensional grid has faces oriented normal to n distinct axes, a
+FACE_ARRAYS_nD object employs n ARRAYS_nD objects for its internal storage.
+
+Headers
+
+FLOOD_FILL_1D.h
+FLOOD_FILL_2D.h
+FLOOD_FILL_3D.h
+
+provide convenient flood fill functionality over integer-valued ARRAY_nD objects. These utility classes are initialized with seed labels and can either perform an unconstrained
+fill, or block propagation of seed regions across specified grid faces. 
+
+Finally the following files
+
+ARRAYS_UNIFORM_FORWARD.h
+GRIDS_UNIFORM_ARRAYS_FORWARD.h
+GRID_ARRAYS_POLICY_UNIFORM.h
+
+provide forward declarations and policy type definitions.
+
+TODO: Add explanations for ARRAYS_UTILITIES.{h,cpp} and FACE_ARRAYS_DYADIC_UNIFORM.h
+

@@ -1,0 +1,22 @@
+//#####################################################################
+// Copyright 2008.
+// This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+//#####################################################################
+
+This Repository contains the data structures and linear algebra tools used by PhysBAM.  It should not depend on any other components of PhysBAM.
+
+From Ron:
+  PhysBAM_Tools will contain all of the data structures and linear algebra.  Arrays, Grids, Octree Grids, Vectors, Matrices, CG, etc.  Everything one would want to have that does not need to
+  be visualized.  For example, there will be a particle class that has the ability to add, delete and manage particles with arbitrary attributes.
+
+TODOs:
+0) Make PhysBAM_Tools compile separately
+1) Separate out *directories* for things that should be optionally compilable.
+        - Read/Write, Image Libraries: These we will need to gather/make the directories.
+        - Boost/STL: Don't have to eliminate these entirely, but try to gather in their uses into a single directory and be able to compile without it.
+
+2) Some directories might have a single isolated *file* that has dependencies.  Users need to go into this directory and replace the dependency with equivalent implementation without breaking the API that we specify. These are also the files that are nontrivial API's, things that are non-trivial to reimplement (such as the FFT stuff).
+        - e.g. FFTW (need to be replaced on other architectures)
+
+3) There will be some stuff we want to keep *ingrained behavior*, but want to be able to macro search & replace without changing functionality.  Would also be good if actual functions lived somewhere else, such that they are easily replaced or deleted.
+        - e.g. exceptions, physbam_asserts, physbam_fatal_errors, backtraces, etc.

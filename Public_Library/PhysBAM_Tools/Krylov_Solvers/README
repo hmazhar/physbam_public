@@ -1,0 +1,12 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Krylov_Solvers 
+Synopsis  : Overloadable implementations of various Krylov methods. In most cases, definition of matrix/vector multiplication is all that is required.
+##################################################
+
+DESCRIPTION
+-----------

@@ -1,0 +1,62 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Vectors
+Synopsis  : Implementations of vectors from the common R^N coordinate spaces
+##################################################
+
+DESCRIPTION
+-----------
+
+PhysBAM vectors correspond closely to elements of the R^N coordinate spaces (with a few minor deviations from this general rule, noted below). The classes
+contained in the Vector directory are divided into 2 main categories:
+
+A. Vectors with compile-time known length (i.e. fixed-dimension):
+
+VECTOR.h
+VECTOR.cpp
+VECTOR_0D.h
+VECTOR_1D.h
+VECTOR_2D.h
+VECTOR_3D.h
+COMPLEX.h
+TWIST.h
+
+Class VECTOR<T,d> is a d-dimensional vector over the scalar type T. The main difference of PhysBAM Arrays and Vectors is that the former are heap-allocated
+and explicitly keep track of their size, while VECTOR<T,d> is a POD type and its dimensionality is encoded in the type's own name. VECTOR objects are ubiquitous
+in the PhysBAM library and their static structure facilitates performance and important compiler optimizations. In this vein, header files VECTOR_[0123]D.h
+provide explicit specializations of the class VECTOR<T,d> (defined in VECTOR.h) to afford even further, dimension-specific optimizations.
+
+COMPLEX.h provides a class for complex numbers which, although semantically distinct from 2-D vectors, also fall in the category of a vector space with
+dimensionality known at compile-time. TWIST variables (defined in TWIST.h) result from the concatenation of a linear velocity, and an angular velocity vector.
+
+B. Heap-allocated vectors
+
+VECTOR_ND.h
+SPARSE_VECTOR_ND.h
+
+VECTOR_ND objects are heap-allocated and are sized at run-time. Unlike the ARRAY or LIST_ARRAY classes which may hold objects of any type, VECTOR_ND objects
+are intended for vectors of scalar types, and their size (albeit technically changeable at run-time) is expected to be specified just once without any further
+change. Nevertheless, there is much functional overlap between VECTOR_ND<T> and ARRAY<T>, and the latter is frequently used in PhysBAM for linear algebra
+purposes as well. Generally, VECTOR_ND objects are often used in linear algebra operations with explicit matrices (such as MATRIX_MXN) while ARRAY objects are
+commonly used with implicitly defined matrices and operators. Finally, SPARSE_VECTOR_ND is optimized for storing vectors with few nonzero entries.
+
+Additional headers:
+
+VECTOR_BASE.h mirrors ARRAY_BASE.h in the Arrays directory, in defining the common interface of PhysBAM vector types.
+VECTOR_EXPRESSION.h provides abstractions for derivative arithmetic expressions of vector types
+
+VECTOR_FORWARD.h
+ARITHMETIC_POLICY.h
+SCALAR_POLICY.h
+
+These headers provide forward declarations and policy definitions for Vector types
+
+Dot_Product.h
+Magnitude.h
+Normalize.h
+
+These files provide frequently used free functions operating on PhysBAM Vectors.

@@ -1,0 +1,40 @@
+\documentclass{article}
+\begin{document}
+\newcommand{\twobytwo}[4]{\left[\begin{array}{cc} #1 & #2 \\ #3 & #4 \end{array} \right]}
+\newcommand{\twov}[2]{\left[\begin{array}{c} #1 \\ #2 \end{array} \right]}
+
+\title{Eigenproblem of $2\times 2$ Symmetrix Matrix}
+\maketitle
+
+Consider the symmetric matrix
+$$\twobytwo{x_{11}}{x_{12}}{x_{12}}{x_{22}}$$
+Let $a=(x_{11}+x_{22})/2$ , $b=(x_{11}-x_{22})/2$, $c=x_{21}$, $m=\sqrt{b^2+c^2}$ then we have
+$$\twobytwo{a+b}{c}{c}{a-b}$$
+In the case $m$ is close to zero, or rather in the case where $c$ and $b$ are roughly zero, then we return $a$ as both the eignevalues and $(1,0)$ and $(0,1)$ as the eigenvectors.
+We have $k=a^2-b^2-c^2=\det A$.
+Then we have the following cases for the eigenvalues
+\begin{enumerate}
+\item If $a\ge 0$ then $\lambda_1 = a+m$ and $\lambda_2 = \frac{k}{a+m}$
+\item Else $a <  0$ then $\lambda_1 = \frac{k}{a-m}$ and $\lambda_2 = a-m$
+\end{enumerate}
+For eigenvectors we have these cases:
+\begin{enumerate}
+\item If $b\ge 0$ then $v_1=\twov{m+b}{c}$ and $v_2=\twov{-c}{m+b}$
+\item Else If $b< 0$ then $v_1=\twov{-c}{b-m}$ and $v_2=\twov{b-m}{c}$
+\end{enumerate}
+Note that the eigenvalues are ordered in terms of value as $\lambda_1 = a+m$  and $\lambda_2 = a-m$  where $m\ge 0$.
+
+Here we describe the computation hazards and avoided hazards:
+\begin{itemize}
+\item Computing $a$ when $x_{11} \approx -x_{22}$
+\item Computing $b$ when $x_{11} \approx x_{22}$
+\item Computing $m$ is safe because you are adding two positive values
+\item The same holds in the eigenvalue computations for the additions in the eigenvalue if $a\ge 0$ and for the subtraction if $a< 0$
+\item The same holds for the eigenvector additions of $m+b$ when $b\ge 0$ and subtraction $b-m$ when $b<0$.
+\item The eigenvalue divisions are fine as the eigenvalues have magnitudes that are at least as large as $m$.
+\item Computing $k$ when the matrix is roughly singular is an issue.
+\item The normalization is safe because $m$ is bounded greater than zero and in this case $b+m\ge m>0$ and in the other case $b-m\le -m<0$ thus we are bounded away from the zero vector.
+\end{itemize}
+
+
+\end{document}

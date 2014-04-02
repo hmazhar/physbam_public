@@ -1,0 +1,94 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Arrays
+Synopsis  : Implementations of variable length one-dimensional arrays and derivative types with array semantics
+##################################################
+
+SUGGESTED CHANGES
+-----------------
+
+1. Remove ARRAY, then rename LIST_ARRAY to ARRAY.  ARRAY does not serve any role that LIST_ARRAY is not able to serve, but LIST_ARRAY is more efficient.  This avoids problems that occur when storing a LIST_ARRAY and calling a function that assumed it would get an ARRAY or visa versa.  This also avoids duplicate functionality.
+
+2. Rename RAW_ARRAY to ARRAY_VIEW to better reflect its purpose.
+
+3. Create a class CONTIGUOUS_ARRAY, which acts as a common base for ARRAY and ARRAY_VIEW.  It is the appropriate place for routines like Flattened(), which make sense on only these types of arrays.  It would also be a good class to use for the read write classes to take (rather than having separate read write for ARRAY and ARRAY_VIEW), since the underlying data can usually be read and written more efficiently in blocks.
+
+4. Rename INDEX_ITERATED_ARRAY to NONCONTIGUOUS_ARRAY.  It is a common base for routines that do not house contiguous data.  This continues to be the place for the iterators that INDEX_ITERATED_ARRAY holds, but it may hold other routines that are specific to these types of array.
+
+5. Make ARRAYS_1D<T>, ARRAYS_2D<T>, ARRAYS_3D<T> become ARRAY<T,VECTOR<int,d> >.  ARRAYS_ND_BASE is merged with ARRAY_BASE.
+
+6. Make FACE_ARRAYS_1D<T>, FACE_ARRAYS_2D<T>, FACE_ARRAYS_3D<T> become ARRAY<T,FACE_INDEX<VECTOR<int,d> > >.   (FACE_INDEX already exists.)
+
+7. Make ARRAY<T,FACE_INDEX<VECTOR<int,d> > > store its data contiguously.  This will make some common operations on these arrays more efficient.
+
+8. Allow flattened indexing of arrays in addition to the normal indexing style, using a special internal type such as FLATTENED_ARRAY_ID to avoid possible misuse.
+
+
+CHANGE BENEFITS
+---------------
+
+1. Uniform interface for arrays.  Everything is allocated as class ARRAY, templatized over data type and index type.  (More indexing types are permitted: ID, VECTOR<ID,d>, FACE_INDEX<ID,d>, where ID is int or an ID type.)  They have the same base classes and the same interface (where possible).
+
+2. Multidimensional arrays gain access to INDIRECT_ARRAY, array expressions, and the other helper routines that are implemented for our traditional array type.  Indirect arrays would be useful, for example, when flattening a pressure array for CG or gathering boundary data for MPI exchange.  It would also be helpful to the solid fluid coupling paper.
+
+3. The internal routines for multidimensional arrays can use flattened indexing, which is more efficient than what we currently use (it is more efficient than manually indexing by dimension and more efficient than iterators).   Because we flatten the storage of ARRAY<T,FACE_INDEX<VECTOR<int,d> > > in suggestion 8, face arrays also benefit from this.
+
+4. ARRAY_VIEW is applicable to multidimensional arrays, too, so that the ability to use the underlying per-axis arrays in face arrays is retained.
+
+5. All array convenience routines use flattened arrays and effectively reuse the routines that normal arrays have.  This means that these need only be mapped to hardware once.
+
+
+PROPOSED CLASS HIERARCHY: inheritance.png
+
+
+DESCRIPTION OF EXISTING TRADITIONAL ARRAYS
+------------------------------------------
+
+The Arrays directory provides implementations of several container classes with array semantics. The arrays considered in this directory are one-dimensional
+with variable length, determined in general at run-time. ARRAY_BASE.h defines the common semantics of these array classes, and all non-utility classes in this
+directory inherit the interface of class ARRAY_BASE via static polymorphism. Note that all PhysBAM arrays are 1-based, in contrast with the 0-based C++ or STL
+array types.
+
+The following classes
+
+  ARRAY (ARRAY.h)
+  RAW_ARRAY (RAW_ARRAY.h)
+
+are the only ones which carry an explicit storage handle to their stored data. Class ARRAY allocates a C++ pointer on the heap to carry its contents, while
+RAW_ARRAY is a wrapper around an externally-owned C++ pointer, providing PhysBAM array semantics over it.
+
+Class ARRAY automatically allocates a C++ array for the exact number of elements it contains. Thus, it is not designed for incremental element addition or
+removal, as any such operation would require reallocation of its entire contents. Class LIST_ARRAY provides the same semantics, yet provides elbow room to allow
+appending elements sequentially while only infrequently requiring reallocation of the allocated space. LIST_ARRAY is implemented as a wrapper around an ARRAY
+class which contains the empty elbow room.
+
+Classes IDENTITY_MAP and CONSTANT_MAP provide the same semantics over discrete identity/constant maps of given size.
+
+Class INDIRECT_ARRAY, wrapping around an array (A) and an index set (I), extracts (symbolically) the section of the array A corresponding to the indices in I
+(i.e. it represents a slice of the array with respect to the index set). Similarly, PROJECTED_ARRAY projects an array of C++ class objects onto a specific field
+of the class contained (specified statically). A similar functionality is offered in classes
+
+  ARRAY_DIFFERENCE
+  ARRAY_EXPRESSION
+  ARRAY_LEFT_MULTIPLE
+  ARRAY_NEGATION
+  ARRAY_PLUS_SCALAR
+  ARRAY_PRODUCT
+  ARRAY_RATIO
+  ARRAY_SUM
+
+which provide symbolic wrappers for the application of the corresponding arithmetic operation on arrays of arguments. These classes can be used to construct
+deeper trees of element-wise arithmetic expressions between arrays, without the need to store the intermediate results explicitly in separate arrays.
+
+SORT.h provides sorting abstractions over PhysBAM array objects.
+
+
+TODO: Scalar_View.h : Add explanation  
+TODO: ARRAYS_FORWARD.h : Includes lots of Grid_Arrays-specific stuff, should it be broken up?
+TODO: ARRAYS_UTILITIES.{h,cpp} : These seem to belong in Grid_Arrays?
+
+

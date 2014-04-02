@@ -1,0 +1,82 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Adaptive_Arithmetic
+Synopsis  : A collection for adaptive precision representations of floating point numbers and fractions
+##################################################
+
+DESCRIPTION
+-----------
+
+The Adaptive_Arithmetic directory defines several classes that can represent numbers at higher precision than built-in floating-point data types. These
+representations are designed to be lightweight in terms of storage requirements, and incur relatively small computational overhead when the precision of
+standard C++ scalar types is sufficient. The data types defined in this directory fall under two general categories: exact, and adaptive representations:
+
+A. Exact types
+
+EXPANSION_ARITHMETIC.h
+EXPANSION_ARITHMETIC.cpp
+EXACT_FLOAT.h
+EXACT_FLOAT.cpp
+EXACT_RATIONAL.h
+EXACT_RATIONAL.cpp
+
+The fundamental building blocks of the adaptive numeric types in this directory are classes EXACT_FLOAT and EXACT_RATIONAL. EXACT_FLOAT is a floating-point
+number that has a finite representation in the binary system, i.e. only contains a finite number of nonzero bits. However, EXACT_FLOAT objects can store many
+more significant digits than C++ float/double types. Internally, an EXACT_FLOAT object is simply a LIST_ARRAY of C++ float or double numbers. We therefore
+identify an EXACT_FLOAT object with the exact value (without any rounding) of the sum of the float/double numbers it contains. We also assume that the
+individual terms in the sum defining the value of an EXACT_FLOAT have no bit-wise overlap, i.e. the exponent ranges corresponding to the significant digits of
+each term are distinct intervals. As a result, an EXACT_FLOAT<T> object can only represent a number in roughly the same exponent range as the primitive scalar
+type T, but with many more significant digits, which are never rounded off.
+
+The underlying machinery that allows arithmetic operations on EXACT_FLOAT objects while maintaining the compactness and invariant properties of the result
+(such as the lack of bit overlap of the terms composing an EXACT_FLOAT) is provided in EXPANSION_ARITHMETIC.{h,cpp}, and is valid on all IEEE754 compliant
+processors. An EXACT_RATIONAL is simply defined as a fraction with EXACT_FLOAT objects as its numerator and denominator.
+
+B. Adaptive types
+
+An adaptive type (derived from class ADAPTIVE_BASE) is a class that provides access to two pieces of information:
+
+  a. An exact representation of a numerical quantity, by means of an EXACT_FLOAT or EXACT_RATIONAL object
+  b. An approximate value (or "estimate") of the same quantity in standard float/double precision, and a bound (or "tolerance") of the approximation error.
+     Thus the real number represented by an adaptive number is contained in the interval [estimate-tolerance,estimate+tolerance].
+
+For those purposes where the float/double precision estimate (with the specified tolerance) is acceptable, operations may be performed using this inexpensive
+approximation. Proper error propagation, according to the rules of interval arithmetic, is followed when combining the inexact forms of adaptive objects. When
+the error bound of a value is higher than acceptable, an adaptive object provides the machinery to obtain an exact value, albeit at the expense of manipulating
+EXACT_FLOAT/EXACT_RATIONAL objects.
+
+Adaptive types are distinguished on the basis of whether they explicitly store the two pieces of information mentioned above (i.e. the exact and inexact versions
+of the number represented) by containing EXACT_FLOAT/EXACT_RATIONAL objects and two primitive C++ scalars for the estimate and tolerance, or if they compute
+these values on demand (via interface functions). In the latter case, the object contains just enough information to compute the result when needed, for example
+an ADAPTIVE_SUM type will store its 2 inputs (or references to them), and only compute an exact or approximate value of their sum when asked to, without storing
+it. The choice between one or the other approach depends on whether the result of an arithmetic expression is expected to be frequently reused; if not, avoiding
+storage of intermediate results of a complicated expression (e.g. a determinant) could yeild significant storage savings.
+
+There are just two adaptive classes that actually store an explicit representation of their result: ADAPTIVE_ATOM and ADAPTIVE_OBJECT_BODY. ADAPTIVE_ATOM is the
+simplest case of an adaptive number: it corresponds to a number which is representable by a standard float/double type, without roundoff error. Thus, for an
+ADAPTIVE_ATOM the estimate is identified with its exact representation, and the approximation error is zero. In contrast, an ADAPTIVE_OBJECT_BODY stores the
+result of a composite arithmetic expression. The class ADAPTIVE_OBJECT is the interface via which an arithmetic expression over adaptive numbers (which would not
+normally store its result explicitly) is endowed with explicit variables that cache its result. Other adaptive types, such as:
+
+ADAPTIVE_DETERMINANT
+ADAPTIVE_DIFFERENCE
+ADAPTIVE_NEGATION
+ADAPTIVE_OP
+ADAPTIVE_PRODUCT
+ADAPTIVE_QUOTIENT
+ADAPTIVE_SIGNED_VOLUME
+ADAPTIVE_SUM
+
+are symbolic representations of arithmetic expressions over adaptive numbers, which do not cache their result, but compute it on demand.
+
+Finally, the following files provide forward declarations for the adaptive number classes, aid in the creation of new expressions and provide abstractions that
+allow using results of previously defined expressions as inputs for further arithmetic operations.
+
+ADAPTIVE_DYNAMIC_BASE.h
+ADAPTIVE_FORWARD.h
+ADAPTIVE_VECTOR_OPERATION_POLICY.h
+ADAPTIVE_WRAPPER_BASE.h

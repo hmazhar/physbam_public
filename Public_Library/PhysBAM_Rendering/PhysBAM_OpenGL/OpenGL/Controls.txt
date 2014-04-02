@@ -1,0 +1,31 @@
+The PhysBAM OpenGL framework defines a number of default controls
+for visualizations based on OPENGL_WORLD. These are:
+
+left drag:               rotate around target
+right drag:              zoom in and out (vertical motion only)
+control and left drag:   move target in vertical plane
+control and right drag:  move target in horizontal plane
+
+control-q:  quit
+control-s:  toggle between regular and red-blue stereo rendering
+control-w:  cycle between regular, wireframe, and shaded wireframe rendering
+control-f:  toggle between regular and full-screen viewing
+control-v:  show visible target temporarily
+control-d:  dump screenshot to disk (the console window will prompt you for a filename)
+control-m:  move camera in towards target
+control-n:  move camera out from target
+control-y:  move camera horizontally around target (to the left)
+control-u:  move camera horizontally around target (to the right)
+control-i:  move target forward horizontally
+control-o:  move target backward horizontally
+control-j:  move target down
+control-k:  move target up
+control-h:  move target left horizontally
+control-l:  move target right horizontally
+control-r:  show frames per second (rendering speed)
+control-g:  toggle smooth shading for objects that think they have a choice
+control-a:  display object names
+
+It is recommended that applications using the framework avoid binding control key
+combinations, and instead use regular letters for their application-specific features.
+

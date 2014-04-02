@@ -1,0 +1,38 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Geometry/Particles
+Synopsis  : Particle system used by PhysBAM.
+##################################################
+
+DESCRIPTION
+-----------
+
+Particle types:
+
+    DEFORMABLE_GEOMETRY_PARTICLES.h
+    RIGID_GEOMETRY_PARTICLES.h
+
+    Provides particle objects for deformable and rigid geometry. Deformable geometry particles contains velocity and position attributes (see PhysBAM_Tools/Particles/README for a description
+    of attributes). Rigid geometry particles contains frame, twist, structure id list, and rigid geometry attributes. The rigid geometry attribute is defined as a pointer to a rigid geometry
+    object for each particle.
+
+Particle Attributes:
+
+    GEOMETRY_PARTICLE_ATTRIBUTE.h
+    PARTICLE_VELOCITY_ATTRIBUTE.h
+
+    PARTICLE_VELOCITY_ATTRIBUTE defines the velocity as a vector for each particle and defines a function that can step a subset of the velocities forward in time. GEOMETRY_PARTICLE_ATTRIBUTE
+    defines the attributes frame (a FRAME for each particle), twist (a TWIST), and structure id list (a LIST_ARRAY of ints), and defines the functions to register them in the
+    PARTICLE_ATTRIBUTE_REGISTRY (see PhysBAM_Tools/Particles/README). We also define in this class a function Initialize_Geometry_Particle() that is called once during the initialization of
+    the simulation that calls the register functions described above. Initialize_Geometry_Particle() also calls routines to register structure types in the STRUCTURE_REGISTRY (this is
+    unrelated to particles attributes).
+
+Extra functionality:
+
+    GEOMETRY_PARTICLE_FORWARD.h
+
+    Contains useful forward declarations

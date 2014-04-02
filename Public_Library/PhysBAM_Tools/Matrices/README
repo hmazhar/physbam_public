@@ -1,0 +1,82 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Matrices
+Synopsis  : Matrices and operators defined over real vector spaces
+##################################################
+
+DESCRIPTION
+-----------
+
+The Matrices directory defines objects that represent linear (or in the case of FRAME, affine) maps within a vector space. The classes defined in this
+directory are closely related to those in the Vectors directory, in the sense that these matrix objects operate on PhysBAM vectors of the respective type
+and dimension.
+
+The first category of classes is associated with objects of type VECTOR<T,d> with dimension known at compile-time:
+
+MATRIX.h
+MATRIX_0X0.h
+MATRIX_1X1.h
+MATRIX_2X2.h
+MATRIX_2X3.h
+MATRIX_3X2.h
+MATRIX_3X2.cpp
+MATRIX_3X3.h
+MATRIX_3X3.cpp
+MATRIX_4X4.h
+MATRIX_4X4.cpp
+DIAGONAL_MATRIX_2X2.h
+DIAGONAL_MATRIX_3X3.h
+SYMMETRIC_MATRIX_2X2.h
+SYMMETRIC_MATRIX_3X3.h
+SYMMETRIC_MATRIX_3X3.cpp
+UPPER_TRIANGULAR_MATRIX_2X2.h
+UPPER_TRIANGULAR_MATRIX_3X3.h
+
+MATRIX<T,m,n> is a POD type corresponding to a (m x n) matrix whose dimensions are known at run time. This class, along with MATRIX_BASE, define all the
+common interface of generic statically-sized matrices, including operations such as matrix-vector multiplication, inversion, transposition and norm calculation.
+The headers MATRIX_?X?.h provide fully specialized versions for individual dimensions and supplement member functions that are only applicable for the specific
+dimension. Additionally, the variants DIAGONAL_MATRIX_???, SYMMETRIC_MATRIX_???, UPPER_TRIANGULAR_MATRIX_??? correspond to special cases of square matrices for
+which the stored representation is compacted accordingly.
+
+QUATERNION.h
+ROTATION.h
+ROTATION.cpp
+FRAME.h
+
+Although quaterions (QUATERNION.h) are extensions of complex numbers (defined in COMPLEX.h in the Vectors directory) they are included here by virtue of their
+action on 3-D vectors (via conjugation with normalized quaterions). 2-D rotations (represented by complex numbers) and 3-D rotations (represented by quaterions)
+are abstracted in the ROTATION class. FRAME is the affine transformation that matches a ROTATION with a translation transformation.
+
+MATRIX_MXN.h
+MATRIX_MXN.cpp
+SYMMETRIC_MATRIX_NXN.h
+SYMMETRIC_MATRIX_NXN.cpp
+SPARSE_MATRIX_NXN.h
+SPARSE_MATRIX_FLAT_NXN.h
+SPARSE_MATRIX_FLAT_NXN.cpp
+SPARSE_MATRIX_FLAT_MXN.h
+SPARSE_MATRIX_FLAT_MXN.cpp
+BANDED_SYMMETRIC_MATRIX.h
+BANDED_SYMMETRIC_MATRIX.cpp
+
+In contrast with MATRIX<T,m,n>, these matrix objects are heap allocated and designed to operate on vector objects of type VECTOR_ND or its sparse variants. Class
+FLAT_MATRIX_NXN stores each row of the matrix in sparse format while the SPARSE_MATRIX_FLAT_??? variants compress all rows into a contiguous block to optimize
+memory access to the elements of the matrix. SYMMETRIC_MATRIX_NXN and BANDED_SYMMETRIC_MATRIX use symmetry and finite bandwidth to reduce the storage footprint
+of the matrix being represented. Note that MATRIX_?X? is stored in column-major format, while its sparse counterparts are store in row-major format.
+
+MATRIX_BASE.h
+MATRIX_BASE.cpp
+
+MATRIX_BASE defines the interface common to most of the matrix types in this directory.
+
+MATRIX_ARITHMETIC_POLICY.h
+VECTOR_POLICY.h
+MATRIX_FORWARD.h
+TRANSPOSE_MATRIX.h
+
+These headers provide policy definitions and forward declarations. TRANSPOSE_MATRIX is a matrix that operates on vectors as the transpose of its internal
+representation.

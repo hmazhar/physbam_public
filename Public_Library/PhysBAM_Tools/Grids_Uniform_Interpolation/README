@@ -1,0 +1,42 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Grids_Uniform_Interpolation
+Synopsis  : Interpolation from data defined on uniform Cartesian lattices to arbitrary spatial locations
+##################################################
+
+
+DESCRIPTION
+-----------
+
+This directory defines classes that aid in the interpolation of quantities that are discretely given on a uniform Cartesian lattice, such that a value of the quantity being
+represented can be computed at an arbitrary spatial location (generally within the boundaries of the lattice, otherwise extrapolation is employed). Consequently, classes
+defined in this directory generally depend on Cartesian lattice definitions (PhysBAM_Tools/Grids_Uniform), storage arrays on uniform lattices (PhysBAM_Tools/Grids_Uniform_Arrays)
+and non-grid-specific interpolation methods (PhysBAM_Tools/Interpolation).
+
+Class INTERPOLATION_UNIFORM defines the common interface of interpolation classes on uniform lattices. Derived from it, class LINEAR_INTERPOLATION_UNIFORM defines a linear
+(or multi-linear, in more than one dimensions) interpolation scheme, which is the most common scheme in PhysBAM. The linear interpolation functionality is aware of a GRID being
+regular or a MAC lattice, and classes LINEAR_INTERPOLATION_MAC_nD_HELPER provide some of the functionality specific to interpolating from values on a MAC grid. 
+
+Class FACE_LOOKUP_UNIFORM abstracts a lookup interface for the discrete values used in an interpolation operation. It admits a trivial implementation for uniform grids (which is
+different from the case of collidable and multi-phase data).
+
+The following files implement more specific functionality:
+
+INTERPOLATION_UNIFORM_FORWARD.h:
+    Forward declarations for uniform grid interpolation classes
+
+AVERAGING_UNIFORM.h:
+    Helpers for the special case of interpolation of quantities from and to different grid primitives (nodes, faces and cells)
+
+LINEAR_INSIDE_CONSTANT_OUTSIDE_INTERPOLATION_UNIFORM.h:
+    Augmentation of linear interpolation with constant extrapolation outside the boundaries of the lattice
+
+CATMULL_ROM_SPLINE_INTERPOLATION.h:
+    Interpolation using a Catmull-Rom spline from uniformly sampled data
+
+CUBIC_MN_INTERPOLATION_UNIFORM.h:
+    Cubic interpolation from a uniform lattice

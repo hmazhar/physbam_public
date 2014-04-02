@@ -1,0 +1,47 @@
+//#####################################################################
+// Copyright 2009, Andrew Selle.
+// This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file PHYSBAM_COPYRIGHT.txt.
+//#####################################################################
+#ifndef COMPILE_WITHOUT_RLE_SUPPORT
+#ifndef __ADVECTION_COLLIDABLE_POLICY_RLE__
+#define __ADVECTION_COLLIDABLE_POLICY_RLE__
+
+#include <PhysBAM_Geometry/Grids_RLE_Advection_Collidable/ADVECTION_COLLIDABLE_RLE_FORWARD.h>
+#include <PhysBAM_Geometry/Grids_RLE_Interpolation_Collidable/INTERPOLATION_COLLIDABLE_POLICY_RLE.h>
+
+namespace PhysBAM{
+
+template<class T_GRID>
+struct ADVECTION_COLLIDABLE_POLICY;
+
+template<class T>
+struct ADVECTION_COLLIDABLE_POLICY<RLE_GRID_2D<T> >
+{
+private:
+    typedef RLE_GRID_2D<T> T_GRID;
+public:
+    // collidable
+    typedef ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_CELL_RLE<T_GRID,T> ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_CELL;
+    typedef ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_FACE_RLE<T_GRID> ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_FACE;
+    // slip collidable
+    typedef ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_CELL_RLE<T_GRID,T> ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_SLIP_CELL;
+    typedef ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_FACE_RLE<T_GRID> ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_SLIP_FACE;
+};
+
+template<class T>
+struct ADVECTION_COLLIDABLE_POLICY<RLE_GRID_3D<T> >
+{
+private:
+    typedef RLE_GRID_3D<T> T_GRID;
+public:
+    // collidable
+    typedef ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_CELL_RLE<T_GRID,T> ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_CELL;
+    typedef ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_FACE_RLE<T_GRID> ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_FACE;
+    // slip collidable
+    typedef ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_CELL_RLE<T_GRID,T> ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_SLIP_CELL;
+    typedef ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_FACE_RLE<T_GRID> ADVECTION_SEMI_LAGRANGIAN_COLLIDABLE_SLIP_FACE;
+};
+
+}
+#endif
+#endif

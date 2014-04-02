@@ -1,0 +1,60 @@
+#####################################################################
+Copyright 2009.
+This file is part of PhysBAM whose distribution is governed by the license contained in the accompanying file Documentation/PHYSBAM_COPYRIGHT.txt
+#####################################################################
+
+##################################################
+Directory : PhysBAM_Tools/Particles
+Synopsis  : Particle system used by PhysBAM.
+##################################################
+
+DESCRIPTION
+-----------
+
+A particle object in PhysBAM is built from the base particle type (PARTICLE.h described below) as well as various particle attributes (see Attribute functionality).
+
+Basic functionality for initialization, cloning, and accessing:
+    
+    PARTICLE.h
+    PARTICLE_POOL.h (for PLS)
+    PARTICLE_SUBSET.h
+
+    These files provide basic implementations that are used by different types of particles to do tasks such as allocating or initializing an array of particles, accessing a subset of
+    particles (this only works for particles with the position attribute), or duplicating particles. Note that no attribute data is stored on this particle base object.
+
+Attribute functionality:
+
+    PARTICLE_ATTRIBUTE_BASE.h
+    PARTICLE_ATTRIBUTE.h
+    PARTICLE_EXTENDER.h
+    PARTICLE_EXTENDER_OPTIONAL.h
+
+    These files provide the ability to add or remove attributes such as position, velocity, frame, twist, etc. to a particle class. PARTICLE_ATTRIBUTE_BASE defines an interface that all
+    attributes must implement to work in our framework. Our implementation is implemented using RAW_ARRAYS and is defined in PARTICLE_ATTRIBUTE, which is templatized over the type of the
+    attribute. The way attributes are associated with the base particle object defined in PARTICLE.h above is via PARTICLE_EXTENDER. PARTICLE_EXTENDER takes a single attribute at a time as
+    well as a particle object and provides functionality to modify the attribute. Multiple attributes are therefore added in a telescopic fashion building on the particle object comprised of
+    the prior attributes and the base particle object. PARTICLE_EXTENDER_OPTIONAL behaves similarly but provides the option of not allocating them until they are used.
+
+Attribute types:
+
+    PARTICLE_POSITION_ATTRIBUTE.h
+    PARTICLE_ID_ATTRIBUTE.h
+
+    These files define the id attribute as well as the position attribute. The id type is a int value for each particle and the position type is a VECTOR for each particle. These are defined
+    using the macros in PARTICLE_ATTRIBUTE. We define two macros to create simple attribute types. One is PHYSBAM_PARTICLE_ATTRIBUTE_SIMPLE_TEMPLATE which is a attribute with no additional
+    functionality beyond storage. PHYSBAM_PARTICLE_ATTRIBUTE_COMBINED_TEMPLATE is another type which allows one additional function that can be used on the attribute. For example,
+    PARTICLE_POSITION_CENTROID_HELPER is a macro that creates a function on the PARTICLE_POSITION_ATTRIBUTE that can be called on any particle to compute the centroid.
+
+Registration:
+
+    PARTICLE_ATTRIBUTE_REGISTRY.h
+
+    In order to use a particle attribute type we register the attributes using a HASHTABLE from a TRIPLE type which contains an integer representing the scalar type, the dimension of the
+    particles, and the attribute id type. This is then used to lookup dynamic attributes. Before any dynamic particle attributes are used they must be added to this registry.
+
+Extra functionality:
+
+    Delete_Particles.h
+    PARTICLES_FORWARD.h
+     
+    Delete_Particles implements a function to prune particles based on a range. PARTICLES_FORWARD provides useful forward declarations.
