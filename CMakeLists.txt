@@ -15,27 +15,18 @@ if (CMAKE_COMPILER_IS_GNUCC)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 endif()
 
-set(PhysBAM_PL_DIR "${CMAKE_SOURCE_DIR}/Public_Library" CACHE PATH "Path to the PhysBAM Public_Library directory")
-
-set(PhysBAM_Tools_DIR "${PhysBAM_PL_DIR}/PhysBAM_Tools" CACHE PATH "Path to the PhysBAM Public_Library/PhysBAM_Tools")
-set(PhysBAM_Geometry_DIR "${PhysBAM_PL_DIR}/PhysBAM_Geometry" CACHE PATH "Path to the PhysBAM Public_Library/PhysBAM_Geometry")
-set(PhysBAM_OpenGL_DIR "${PhysBAM_PL_DIR}/PhysBAM_Rendering/PhysBAM_OpenGL" CACHE PATH "Path to the PhysBAM Public_Library/PhysBAM_OpenGL")
+set(PhysBAM_PL_DIR "${CMAKE_SOURCE_DIR}" CACHE PATH "Path to the PhysBAM Public_Library directory")
 
 
-file(GLOB_RECURSE PhysBAM_Tools_SOURCE "${PhysBAM_Tools_DIR}/*.cpp")
-file(GLOB_RECURSE PhysBAM_Tools_HEADER "${PhysBAM_Tools_DIR}/*.h")
 
-file(GLOB_RECURSE PhysBAM_Geometry_SOURCE "${PhysBAM_Geometry_DIR}/*.cpp")
-file(GLOB_RECURSE PhysBAM_Geometry_HEADER "${PhysBAM_Geometry_DIR}/*.h")
 
-file(GLOB_RECURSE PhysBAM_OpenGL_SOURCE "${PhysBAM_OpenGL_DIR}/*.cpp")
-file(GLOB_RECURSE PhysBAM_OpenGL_HEADER "${PhysBAM_OpenGL_DIR}/*.h")
+
+
 
 option(PHYSBAM_USE_DOUBLE   "Turn ON to enable double support"  OFF )
 option(PHYSBAM_USE_DYADIC   "Turn ON to enable dyadic support"  OFF )
 option(PHYSBAM_USE_BINTREE  "Turn ON to enable bintree support" ON  )
 option(PHYSBAM_USE_RLE      "Turn ON to enable RLE support"     OFF )
-
 option(PHYSBAM_USE_ZLIB     "Turn ON to enable zlib support"    OFF )
 option(PHYSBAM_USE_FFMPEG   "Turn ON to enable ffmpeg support"  OFF )
 option(PHYSBAM_USE_JPEG     "Turn ON to enable libjpeg support" OFF )
@@ -80,18 +71,10 @@ IF (PHYSBAM_USE_MPI)
 ENDIF()
 
 
-include_directories(${PhysBAM_PL_DIR})
+ADD_SUBDIRECTORY(PhysBAM_Tools)
+ADD_SUBDIRECTORY(PhysBAM_Geometry)
+ADD_SUBDIRECTORY(PhysBAM_Rendering)
 
-add_library(PhysBAM_Tools ${PhysBAM_Tools_SOURCE} ${PhysBAM_Tools_HEADER})
-add_library(PhysBAM_Geometry ${PhysBAM_Geometry_SOURCE} ${PhysBAM_Geometry_HEADER})
-add_library(PhysBAM_OpenGL ${PhysBAM_OpenGL_SOURCE} ${PhysBAM_OpenGL_HEADER})
-
-FIND_PACKAGE(OpenGL)
-FIND_PACKAGE(GLUT)
-
-target_link_libraries(PhysBAM_Geometry PhysBAM_Tools)
-target_link_libraries(PhysBAM_OpenGL PhysBAM_Tools ${OPENGL_LIBRARIES}
-		${GLUT_LIBRARY})
 
 file(COPY ${PhysBAM_Tools_DIR} ${PhysBAM_Geometry_DIR} ${PhysBAM_OpenGL_DIR}
 		DESTINATION ${PhysBAM_BINARY_DIR}/include
