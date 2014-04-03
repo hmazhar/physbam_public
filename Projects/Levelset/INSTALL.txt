@@ -1,0 +1,12 @@
+Water
+=====
+
+The water project is an example project that uses the PhysBAM code base. The purpose of this project is to run a simple water simulation. In order to compile this project you must
+first install the Geometry portion of the PhysBAM library under the directory $PHYSBAM/PhysBAM_Geometry. Once this is complete place this water project under $PHYSBAM/Projects/Levelset. You
+can then build the Levelset project using scons.
+
+In order to run parallel algorithms the tools library must be compiled with the appropriate flags. For use of MPI it must be compiled with USE_MPI=1 and USE_LAM=1 which can be specified within
+the Sconstruct.options file. To run with threads you must modify the compile flags to add -DUSE_PTHREADS. Note that threading in PhysBAM in still in the experimental stages and thus the
+results may not be as good as they will be in the future.
+
+This project and PhysBAM are govered by the BSD license as found in PhysBAM_Copyright.txt found in the PhysBAM library.
