@@ -18,11 +18,6 @@ endif()
 set(PhysBAM_PL_DIR "${CMAKE_SOURCE_DIR}" CACHE PATH "Path to the PhysBAM Public_Library directory")
 
 
-
-
-
-
-
 option(PHYSBAM_USE_DOUBLE   "Turn ON to enable double support"  OFF )
 option(PHYSBAM_USE_DYADIC   "Turn ON to enable dyadic support"  OFF )
 option(PHYSBAM_USE_BINTREE  "Turn ON to enable bintree support" ON  )
@@ -61,6 +56,7 @@ IF (PHYSBAM_USE_JPEG)
 ENDIF()
 IF (PHYSBAM_USE_PNG)
 		FIND_PACKAGE(PNG)
+		ADD_DEFINITIONS("-DUSE_LIBPNG")
 ENDIF()
 IF (PHYSBAM_USE_OPENEXR)
 ENDIF()
@@ -74,8 +70,7 @@ ENDIF()
 ADD_SUBDIRECTORY(PhysBAM_Tools)
 ADD_SUBDIRECTORY(PhysBAM_Geometry)
 ADD_SUBDIRECTORY(PhysBAM_Rendering)
-
-
+ADD_SUBDIRECTORY(Projects)
 file(COPY ${PhysBAM_Tools_DIR} ${PhysBAM_Geometry_DIR} ${PhysBAM_OpenGL_DIR}
 		DESTINATION ${PhysBAM_BINARY_DIR}/include
 		FILES_MATCHING PATTERN "*.h" )

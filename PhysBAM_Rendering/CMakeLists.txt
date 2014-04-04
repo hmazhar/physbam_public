@@ -9,7 +9,6 @@ file(GLOB_RECURSE PhysBAM_Ray_Tracing_SOURCE "${PhysBAM_OpenGL_DIR}/*.cpp")
 file(GLOB_RECURSE PhysBAM_Ray_Tracing_HEADER "${PhysBAM_OpenGL_DIR}/*.h")
 
 
-
 include_directories(${PhysBAM_PL_DIR})
 
 add_library(PhysBAM_OpenGL ${PhysBAM_OpenGL_SOURCE} ${PhysBAM_OpenGL_HEADER})
@@ -19,6 +18,12 @@ add_library(PhysBAM_RayTracing ${PhysBAM_Ray_Tracing_SOURCE} ${PhysBAM_Ray_Traci
 FIND_PACKAGE(OpenGL)
 FIND_PACKAGE(GLUT)
 
-target_link_libraries(PhysBAM_OpenGL PhysBAM_Tools ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+SET (LIBS ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 
-target_link_libraries(PhysBAM_RayTracing PhysBAM_Tools PhysBAM_Geometry ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+IF (PHYSBAM_USE_PNG)
+SET (LIBS ${LIBS} ${PNG_LIBRARY_RELEASE})
+ENDIF()
+
+target_link_libraries(PhysBAM_OpenGL PhysBAM_Tools ${LIBS})
+
+target_link_libraries(PhysBAM_RayTracing PhysBAM_Tools PhysBAM_Geometry ${LIBS})
