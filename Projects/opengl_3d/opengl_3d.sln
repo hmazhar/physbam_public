@@ -1,0 +1,49 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opengl_3d", "opengl_3d.vcproj", "{06BFB4E5-C12D-4135-96D7-041162378D26}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CFE01F23-CA91-45DC-9770-2120F4F26D9F} = {CFE01F23-CA91-45DC-9770-2120F4F26D9F}
+		{5365B025-91A3-4714-9A5C-68FA9374FC0B} = {5365B025-91A3-4714-9A5C-68FA9374FC0B}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysBAM", "..\..\Public_Library\PhysBAM.vcproj", "{5365B025-91A3-4714-9A5C-68FA9374FC0B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gzstream", "..\..\External_Libraries\gzstream\gzstream.vcproj", "{CFE01F23-CA91-45DC-9770-2120F4F26D9F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysBAM_OpenGL", "..\..\Public_Library\PhysBAM_OpenGL.vcproj", "{C020ACCE-D1C2-41DF-9587-061544A56B5C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Profiling Release|Win32 = Profiling Release|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06BFB4E5-C12D-4135-96D7-041162378D26}.Debug|Win32.ActiveCfg = Debug|Win32
+		{06BFB4E5-C12D-4135-96D7-041162378D26}.Debug|Win32.Build.0 = Debug|Win32
+		{06BFB4E5-C12D-4135-96D7-041162378D26}.Profiling Release|Win32.ActiveCfg = Release|Win32
+		{06BFB4E5-C12D-4135-96D7-041162378D26}.Profiling Release|Win32.Build.0 = Release|Win32
+		{06BFB4E5-C12D-4135-96D7-041162378D26}.Release|Win32.ActiveCfg = Release|Win32
+		{06BFB4E5-C12D-4135-96D7-041162378D26}.Release|Win32.Build.0 = Release|Win32
+		{5365B025-91A3-4714-9A5C-68FA9374FC0B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5365B025-91A3-4714-9A5C-68FA9374FC0B}.Debug|Win32.Build.0 = Debug|Win32
+		{5365B025-91A3-4714-9A5C-68FA9374FC0B}.Profiling Release|Win32.ActiveCfg = Profiling Release|Win32
+		{5365B025-91A3-4714-9A5C-68FA9374FC0B}.Profiling Release|Win32.Build.0 = Profiling Release|Win32
+		{5365B025-91A3-4714-9A5C-68FA9374FC0B}.Release|Win32.ActiveCfg = Release|Win32
+		{5365B025-91A3-4714-9A5C-68FA9374FC0B}.Release|Win32.Build.0 = Release|Win32
+		{CFE01F23-CA91-45DC-9770-2120F4F26D9F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CFE01F23-CA91-45DC-9770-2120F4F26D9F}.Debug|Win32.Build.0 = Debug|Win32
+		{CFE01F23-CA91-45DC-9770-2120F4F26D9F}.Profiling Release|Win32.ActiveCfg = Release|Win32
+		{CFE01F23-CA91-45DC-9770-2120F4F26D9F}.Profiling Release|Win32.Build.0 = Release|Win32
+		{CFE01F23-CA91-45DC-9770-2120F4F26D9F}.Release|Win32.ActiveCfg = Release|Win32
+		{CFE01F23-CA91-45DC-9770-2120F4F26D9F}.Release|Win32.Build.0 = Release|Win32
+		{C020ACCE-D1C2-41DF-9587-061544A56B5C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C020ACCE-D1C2-41DF-9587-061544A56B5C}.Debug|Win32.Build.0 = Debug|Win32
+		{C020ACCE-D1C2-41DF-9587-061544A56B5C}.Profiling Release|Win32.ActiveCfg = Profiling Release|Win32
+		{C020ACCE-D1C2-41DF-9587-061544A56B5C}.Release|Win32.ActiveCfg = Release|Win32
+		{C020ACCE-D1C2-41DF-9587-061544A56B5C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

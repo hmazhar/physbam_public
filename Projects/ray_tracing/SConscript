@@ -1,0 +1,28 @@
+# SConscript
+import os
+
+Import('env Automatic_Program Automatic_Library variant_build')
+
+env=env.Copy(USE_RENDERING=1,USE_OPENGL=0,USE_MPI=0)
+Generic_Render=Automatic_Library(env,'PhysBAM_Generic_Render',['Generic'])
+libsuffix=""
+if not env['shared']: libsuffix="_static"
+env.Append(LIBS=["PhysBAM_Generic_Render"+libsuffix],LIBPATH=['#'+variant_build+'/Projects/ray_tracing'],RPATH=[Dir('#'+variant_build+'/Projects/ray_tracing').abspath])
+
+# ray_tracing_preview
+envpreview=env.Copy(USE_OPENGL=1)
+if env['compile_without_double_support']:
+    Automatic_Program(envpreview,"ray_tracing_preview",["ray_tracing_preview_float.cpp"])
+else:
+    Automatic_Program(envpreview,"ray_tracing_preview",["ray_tracing_preview.cpp"])
+
+# ray_tracing
+envrender=env.Copy()
+if not env['shared'] and not env['USE_LAM'] and not env['PLATFORM'].startswith("win32"): envrender.Append(LINKFLAGS=" -static")
+if env['compile_without_double_support']:
+    Automatic_Program(envrender,"ray_tracing",["ray_tracing_float.cpp"])
+else:
+    Automatic_Program(envrender,"ray_tracing",["ray_tracing.cpp"])
+
+#envdebug=env.Copy(USE_OPENGL=1,USE_FLTK=1)
+#Automatic_Program(envdebug,'ray_debugger',['ray_tracing_debugger.cpp','Ray_Debugger/Fl_Node.cpp','Ray_Debugger/Fl_ToggleNode.cpp','Ray_Debugger/Fl_ToggleTree.cpp','Ray_Debugger/Fl_Tree.cpp','Ray_Debugger/IMAGE_WINDOW.cpp','Ray_Debugger/SCENE_WINDOW.cpp'])

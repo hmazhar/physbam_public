@@ -1,0 +1,70 @@
+#!/usr/bin/python
+
+import os
+import sys
+import re
+import tempfile
+
+library_directories="../../build/nocona/release/Projects/ray_tracing:../../build/nocona/release/Public_Library"
+binary_directory="../../build/nocona/release/Projects/ray_tracing"
+binary="ray_tracing_preview"
+
+base_directory=os.path.dirname(sys.argv[0])
+dirs=":".join(map(lambda x:os.path.join(base_directory,x),library_directories.split(':')))
+libpath='LD_LIBRARY_PATH'
+if sys.platform=='darwin': libpath='DYLD_LIBRARY_PATH'
+if os.environ.has_key(libpath):
+    os.environ[libpath]=dirs+":"+os.environ[libpath]
+else:
+    os.environ[libpath]=dirs
+
+# parse arguments
+usage="Usage: %s [--debug <debugger>] [--copy] [arg1 arg2 ...]"%sys.argv[0]
+args=sys.argv[1:]
+args.reverse()
+unconsumed=[]
+debugger,copy,ldd="",False,False
+usexterm=False
+while len(args):
+    arg=args.pop()
+    if arg=="--debug":
+        debugger=args.pop()
+    elif arg=="--xterm":
+        usexterm=True
+    elif arg=="--ldd":
+        ldd=True
+    elif arg=="--copy":
+        copy=args.pop()
+    elif arg=="--wrapperhelp":
+        print usage
+        sys.exit(1)
+    else:
+        unconsumed.append(arg)
+
+binary="%s/%s/%s"%(base_directory,binary_directory,binary)
+if copy:
+    code=os.system("$PHYSBAM/Scripts/misc/copyexe \"%s\" %s"%(binary,copy))
+    sys.exit(code>>8)
+elif ldd:
+    code=os.system("ldd \"%s\""%binary)
+    sys.exit(code>>8)
+elif debugger:
+    if re.match('gdb|ddd',debugger):
+        handle,name=tempfile.mkstemp(prefix='gdb-command')
+        open(name,'w').write('run '+' '.join(unconsumed)+'\n')
+        if usexterm:
+            os.execvp('xterm',['xterm','-title',"rank-%s"%os.environ["LAMRANK"],'-e','%s %s %s'%(debugger,binary,'--command='+name)])
+        else:
+            os.execvp(debugger,[debugger,binary,'--command='+name])
+    elif re.match('valgrind|gldb',debugger):
+        code=0
+        if usexterm:
+            code=os.system("xterm -title %s -e \"%s %s %s\""%("rank-%s"%os.environ["LAMRANK"],debugger,binary,' '.join(unconsumed)))
+        else:
+            code=os.system("%s %s %s"%(debugger,binary,' '.join(unconsumed)))
+        sys.exit(code>>8)
+    else:
+        print 'Unrecognized debugger %s: discarding arguments'%debugger
+        os.execvp(debugger,[debugger,binary])
+else:
+    os.execvp(binary,[sys.argv[0]]+unconsumed)
