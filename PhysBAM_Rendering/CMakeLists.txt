@@ -14,12 +14,9 @@ include_directories(${PhysBAM_PL_DIR})
 add_library(PhysBAM_OpenGL ${PhysBAM_OpenGL_SOURCE} ${PhysBAM_OpenGL_HEADER})
 add_library(PhysBAM_RayTracing ${PhysBAM_Ray_Tracing_SOURCE} ${PhysBAM_Ray_Tracing_HEADER})
 
-
 FIND_PACKAGE(OpenGL)
 FIND_PACKAGE(GLUT)
 
-SET (PHYSBAM_LIBS ${PHYSBAM_LIBS} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+target_link_libraries(PhysBAM_OpenGL PhysBAM_Tools PhysBAM_Geometry ${PHYSBAM_LIBS} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 
-target_link_libraries(PhysBAM_OpenGL PhysBAM_Tools ${PHYSBAM_LIBS})
-
-target_link_libraries(PhysBAM_RayTracing PhysBAM_Tools PhysBAM_Geometry ${PHYSBAM_LIBS})
+target_link_libraries(PhysBAM_RayTracing PhysBAM_Tools PhysBAM_Geometry ${PHYSBAM_LIBS} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
