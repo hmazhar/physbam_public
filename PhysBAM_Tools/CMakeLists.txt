@@ -7,3 +7,4 @@ include_directories(${PhysBAM_PL_DIR})
 
 add_library(PhysBAM_Tools ${PhysBAM_Tools_SOURCE} ${PhysBAM_Tools_HEADER})
 
+target_link_libraries( PhysBAM_Tools ${PHYSBAM_LIBS})
