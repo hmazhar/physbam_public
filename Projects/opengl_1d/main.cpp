@@ -400,7 +400,7 @@ int main(int argc,char *argv[])
 //    Initialize_General_Particle();
     Initialize_Read_Write_Structures();
     Initialize_Geometry_Particle();
-    PROCESS_UTILITIES::Set_Floating_Point_Exception_Handling(true);
+    PROCESS_UTILITIES::Set_Floating_Point_Exception_Handling(false);
     PROCESS_UTILITIES::Set_Backtrace(true);
     bool type_double=false; // float by default
     if(PARSE_ARGS::Find_And_Remove("-float",argc,argv)) type_double=false;

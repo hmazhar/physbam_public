@@ -1151,7 +1151,7 @@ int main(int argc,char* argv[])
 {
     Initialize_Geometry_Particle();
     Initialize_Read_Write_Structures();
-    PROCESS_UTILITIES::Set_Floating_Point_Exception_Handling(true);
+    PROCESS_UTILITIES::Set_Floating_Point_Exception_Handling(false);
     PROCESS_UTILITIES::Set_Backtrace(true);
     bool type_double=false; // float by default
     if(PARSE_ARGS::Find_And_Remove("-float",argc,argv)) type_double=false;
