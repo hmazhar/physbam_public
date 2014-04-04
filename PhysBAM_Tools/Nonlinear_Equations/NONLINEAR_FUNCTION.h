@@ -62,7 +62,7 @@ struct PARAMETER_SPACE
     virtual ~PARAMETER_SPACE(){}
 
     virtual PARAMETER_SPACE<T>& Zero_Clone() const {PHYSBAM_FUNCTION_IS_NOT_DEFINED();}
-    virtual void Op(T a,const PARAMETER_SPACE& x,T b,const PARAMETER_SPACE& y)=0; // this=a*x+b*y
+    virtual void Op(T a,const PARAMETER_SPACE& x,T b,const PARAMETER_SPACE& y); // this=a*x+b*y
     virtual void Copy(const PARAMETER_SPACE& x) {Op(1,x,0,*this);} // this=x
     virtual void Zero() {Op(0,*this,0,*this);} // this=0
     virtual T Dot(const PARAMETER_SPACE& x) const {PHYSBAM_FUNCTION_IS_NOT_DEFINED();} // this dot x
