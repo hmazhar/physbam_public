@@ -1,12 +1,12 @@
 set(PhysBAM_OpenGL_DIR "${PhysBAM_PL_DIR}/PhysBAM_Rendering/PhysBAM_OpenGL" CACHE PATH "Path to the PhysBAM Public_Library/PhysBAM_OpenGL")
-set(PhysBAM_OpenGL_DIR "${PhysBAM_PL_DIR}/PhysBAM_Rendering/PhysBAM_Ray_Tracing" CACHE PATH "Path to the PhysBAM Public_Library/PhysBAM_Ray_Tracing")
+set(PhysBAM_RayTracing_DIR "${PhysBAM_PL_DIR}/PhysBAM_Rendering/PhysBAM_Ray_Tracing" CACHE PATH "Path to the PhysBAM Public_Library/PhysBAM_Ray_Tracing")
 
 
 file(GLOB_RECURSE PhysBAM_OpenGL_SOURCE "${PhysBAM_OpenGL_DIR}/*.cpp")
 file(GLOB_RECURSE PhysBAM_OpenGL_HEADER "${PhysBAM_OpenGL_DIR}/*.h")
 
-file(GLOB_RECURSE PhysBAM_Ray_Tracing_SOURCE "${PhysBAM_OpenGL_DIR}/*.cpp")
-file(GLOB_RECURSE PhysBAM_Ray_Tracing_HEADER "${PhysBAM_OpenGL_DIR}/*.h")
+file(GLOB_RECURSE PhysBAM_Ray_Tracing_SOURCE "${PhysBAM_RayTracing_DIR}/*.cpp")
+file(GLOB_RECURSE PhysBAM_Ray_Tracing_HEADER "${PhysBAM_RayTracing_DIR}/*.h")
 
 
 include_directories(${PhysBAM_PL_DIR})

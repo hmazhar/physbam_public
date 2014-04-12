@@ -35,6 +35,9 @@ option(PHYSBAM_USE_FFTW     		"Turn ON to enable FFTW support"    		OFF )
 option(PHYSBAM_USE_MPI      		"Turn ON to enable MPI support"     		OFF )
 option(PHYSBAM_USE_PTHREADS      	"Turn ON to enable PThreads support"     	OFF )
 option(PHYSBAM_USE_COMPRESSION      "Turn ON to enable Compression support"     OFF )
+option(PHYSBAM_BUILD_PROJECTS       "Turn ON to build example projects"         OFF )
+
+
 
 IF (NOT PHYSBAM_USE_DOUBLE_SUPPORT)
 	ADD_DEFINITIONS("-DCOMPILE_WITHOUT_DOUBLE_SUPPORT")
@@ -117,7 +120,10 @@ SET (PHYSBAM_LIBS
 ADD_SUBDIRECTORY(PhysBAM_Tools)
 ADD_SUBDIRECTORY(PhysBAM_Geometry)
 ADD_SUBDIRECTORY(PhysBAM_Rendering)
-ADD_SUBDIRECTORY(Projects)
+
+IF (PHYSBAM_BUILD_PROJECTS)
+	ADD_SUBDIRECTORY(Projects)
+ENDIF()
 
 file(COPY ${PhysBAM_Tools_DIR} ${PhysBAM_Geometry_DIR} ${PhysBAM_OpenGL_DIR}
 		DESTINATION ${PhysBAM_BINARY_DIR}/include
