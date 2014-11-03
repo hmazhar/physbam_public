@@ -46,19 +46,19 @@ public:
     {return *this;}
 
     const T& operator[](const int) const
-    {PHYSBAM_FATAL_ERROR();}
+    {PHYSBAM_FATAL_ERROR("");}
 
     T& operator[](const int)
-    {PHYSBAM_FATAL_ERROR();}
+    {PHYSBAM_FATAL_ERROR("");}
 
     int Size() const
     {return 0;}
 
     const T& operator()(const int i) const
-    {PHYSBAM_FATAL_ERROR();}
+    {PHYSBAM_FATAL_ERROR("");}
 
     T& operator()(const int i)
-    {PHYSBAM_FATAL_ERROR();}
+    {PHYSBAM_FATAL_ERROR("");}
 
     bool operator==(const VECTOR& v) const
     {return true;}
