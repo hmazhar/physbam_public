@@ -254,11 +254,11 @@ public:
     static void Copy(const T2 c1,const T_ARRAY1& v1,const T2 c2,const T_ARRAY2& v2,const T2 c3,const T_ARRAY3& v3,T_ARRAY4& result)
     {result=c1*v1+c2*v2+c3*v3;}
 
-    static void Copy_Element(const ID from,const ID to)
+    void Copy_Element(const ID from,const ID to)
     {T_ARRAY& self=Derived();self(to)=self(from);}
     
     template<class T_ARRAY1>
-    static void Copy_Element(const T_ARRAY1& from_array,const ID from,const ID to)
+    void Copy_Element(const T_ARRAY1& from_array,const ID from,const ID to)
     {T_ARRAY& self=Derived();self(to)=static_cast<const T_ARRAY&>(from_array)(from);}
 
     static void Get(T_ARRAY& new_copy,const T_ARRAY& old_copy)
