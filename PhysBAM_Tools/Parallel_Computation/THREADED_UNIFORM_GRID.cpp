@@ -58,7 +58,7 @@ THREADED_UNIFORM_GRID(ARRAY<THREAD_PACKAGE>& buffers_input,const int tid_input,c
 
     // extract global grid and divide among processes
     global_grid=local_grid.Get_Regular_Grid(); // Split_Grid and Initialize_Communicator currently assume grid is non-MAC
-    Split_Grid(processes_per_dimension);
+    this->Split_Grid(processes_per_dimension);
 
     // setup topology
     process_ranks.Resize(process_grid.Domain_Indices(1));ARRAYS_COMPUTATIONS::Fill(process_ranks.array,-1);
