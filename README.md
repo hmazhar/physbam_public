@@ -13,10 +13,10 @@ GCC 4.6.3
 GCC 4.7.2
 GCC 4.8.1  -- (Does not compile several examples in project, Linking issue)
 
-
 OSX:
 GCC 4.7.3
 GCC 4.9.0
+Apple LLVM version 6.0 (clang-600.0.56) (based on LLVM 3.5svn)
 
 Extra packages installed using homebrew:
 brew install ffmpeg openexr fftw zlib libpng libjpeg
@@ -29,19 +29,13 @@ Currently does not compile on:
 ```
 
 Linux:
-
 OSX:
-Apple LLVM version 5.0 (clang-500.2.79) (based on LLVM 3.3svn)
-
-
 Windows:
 
 VS 2013
 MinGW (GCC 3.4.5)
 ```
-
 Build testing using GCC 4.6.3 is availible [here](https://drone.io/github.com/hmazhar/physbam_public)
-
 
 Physbam is Copyright 1999-2010:
 
