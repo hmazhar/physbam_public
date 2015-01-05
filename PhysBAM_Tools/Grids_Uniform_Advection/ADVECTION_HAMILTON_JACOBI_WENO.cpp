@@ -21,8 +21,8 @@ Advection_Solver(const int m,const T dx,const ARRAY<T2,VECTOR<int,1> >& Z,const 
         if(epsilon == 0) epsilon=(T)1e-6;} // epsilon=0 implies all v_i=0 and all u_Zx=0  
 
     for(i=1;i<=m;i++){
-        if(u(i) > 0) u_Zx(i)=u(i)*WENO(D1(i-3),D1(i-2),D1(i-1),D1(i),D1(i+1),epsilon);
-        else u_Zx(i)=u(i)*WENO(D1(i+2),D1(i+1),D1(i),D1(i-1),D1(i-2),epsilon);}
+        if(u(i) > 0) u_Zx(i)=u(i)*this->WENO(D1(i-3),D1(i-2),D1(i-1),D1(i),D1(i+1),epsilon);
+        else u_Zx(i)=u(i)*this->WENO(D1(i+2),D1(i+1),D1(i),D1(i-1),D1(i-2),epsilon);}
 }
 //#####################################################################
 template class ADVECTION_HAMILTON_JACOBI_WENO<GRID<VECTOR<float,1> >,float>;

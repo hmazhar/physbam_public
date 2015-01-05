@@ -18,7 +18,7 @@ template<class T_GRID,class T2> void BOUNDARY_REFLECTION_UNIFORM<T_GRID,T2>::
 Fill_Ghost_Cells(const T_GRID& grid,const T_ARRAYS_T2& u,T_ARRAYS_T2& u_ghost,const T dt,const T time,const int number_of_ghost_cells)
 {
     T_ARRAYS_T2::Put(u,u_ghost); // interior
-    ARRAY<RANGE<TV_INT> > regions;Find_Ghost_Regions(grid,regions,number_of_ghost_cells);
+    ARRAY<RANGE<TV_INT> > regions;this->Find_Ghost_Regions(grid,regions,number_of_ghost_cells);
     for(int side=1;side<=T_GRID::number_of_faces_per_cell;side++) Fill_Single_Ghost_Region(grid,u_ghost,regions(side),side,dt,time,number_of_ghost_cells);
 }
 //#####################################################################
@@ -28,7 +28,7 @@ template<class T_GRID,class T2> void BOUNDARY_REFLECTION_UNIFORM<T_GRID,T2>::
 Fill_Single_Ghost_Region(const T_GRID& grid,T_ARRAYS_T2& u_ghost,const RANGE<TV_INT>& region,const int side,const T dt,const T time,const int number_of_ghost_cells) const
 {
     if(Constant_Extrapolation(side)) Fill_Single_Ghost_Region(grid,u_ghost,side,region);
-    else{int axis=(side+1)/2,boundary=Boundary(side,region),reflection_times_two=2*boundary+(side&1?-1:1);
+    else{int axis=(side+1)/2,boundary=this->Boundary(side,region),reflection_times_two=2*boundary+(side&1?-1:1);
         for(NODE_ITERATOR iterator(grid,region);iterator.Valid();iterator.Next()){TV_INT node=iterator.Node_Index();
             TV_INT reflected_node=node;reflected_node[axis]=reflection_times_two-node[axis];
             u_ghost(node)=u_ghost(reflected_node);}}

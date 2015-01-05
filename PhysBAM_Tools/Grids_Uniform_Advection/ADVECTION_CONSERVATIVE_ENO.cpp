@@ -53,13 +53,13 @@ Advection_Solver(const int m,const T dx,const ARRAY<T2,VECTOR<int,1> >& Z,const 
         flux(i)=.5*(flux_left+flux_right);}
     else if(order == 2) for(int i=0;i<=m;i++){
         T2 alpha=maxabs(u(i),u(i+1));
-        T2 flux_left=ENO(dx,DUZ1(i)+alpha*DZ1(i),DUZ2(i-1)+alpha*DZ2(i-1),DUZ2(i)+alpha*DZ2(i));
-        T2 flux_right=ENO(dx,DUZ1(i+1)-alpha*DZ1(i+1),-(DUZ2(i+1)-alpha*DZ2(i+1)),-(DUZ2(i)-alpha*DZ2(i)));
+        T2 flux_left=this->ENO(dx,DUZ1(i)+alpha*DZ1(i),DUZ2(i-1)+alpha*DZ2(i-1),DUZ2(i)+alpha*DZ2(i));
+        T2 flux_right=this->ENO(dx,DUZ1(i+1)-alpha*DZ1(i+1),-(DUZ2(i+1)-alpha*DZ2(i+1)),-(DUZ2(i)-alpha*DZ2(i)));
         flux(i)=.5*(flux_left+flux_right);}
     else if(order == 3) for(int i=0;i<=m;i++){
         T2 alpha=maxabs(u(i),u(i+1));
-        T2 flux_left=ENO(dx,DUZ1(i)+alpha*DZ1(i),DUZ2(i-1)+alpha*DZ2(i-1),DUZ2(i)+alpha*DZ2(i),DUZ3(i-2)+alpha*DZ3(i-2),DUZ3(i-1)+alpha*DZ3(i-1),DUZ3(i)+alpha*DZ3(i));
-        T2 flux_right=ENO(dx,DUZ1(i+1)-alpha*DZ1(i+1),-(DUZ2(i+1)-alpha*DZ2(i+1)),-(DUZ2(i)-alpha*DZ2(i)),DUZ3(i+1)-alpha*DZ3(i+1),DUZ3(i)-alpha*DZ3(i),DUZ3(i-1)-alpha*DZ3(i-1));
+        T2 flux_left=this->ENO(dx,DUZ1(i)+alpha*DZ1(i),DUZ2(i-1)+alpha*DZ2(i-1),DUZ2(i)+alpha*DZ2(i),DUZ3(i-2)+alpha*DZ3(i-2),DUZ3(i-1)+alpha*DZ3(i-1),DUZ3(i)+alpha*DZ3(i));
+        T2 flux_right=this->ENO(dx,DUZ1(i+1)-alpha*DZ1(i+1),-(DUZ2(i+1)-alpha*DZ2(i+1)),-(DUZ2(i)-alpha*DZ2(i)),DUZ3(i+1)-alpha*DZ3(i+1),DUZ3(i)-alpha*DZ3(i),DUZ3(i-1)-alpha*DZ3(i-1));
         flux(i)=.5*(flux_left+flux_right);}
 
     for(int i=1;i<=m;i++) u_Zx(i)=(flux(i)-flux(i-1))*one_over_dx;

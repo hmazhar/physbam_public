@@ -27,9 +27,9 @@ Advection_Solver(const int m_start,const int m_end,const T dx,const ARRAY<T2,VEC
     if(order == 3) for(i=m_start-3;i<=m_end;i++) D3(i)=(D2(i+1)-D2(i))*one_over_three_dx;
 
     if(order == 1) for(i=m_start;i<=m_end;i++){if(u(i) > 0) u_Zx(i)=u(i)*D1(i-1);else u_Zx(i)=u(i)*D1(i);}
-    else if(order == 2) for(i=m_start;i<=m_end;i++){if(u(i) > 0) u_Zx(i)=u(i)*ENO(dx,D1(i-1),D2(i-2),D2(i-1));else u_Zx(i)=u(i)*ENO(dx,D1(i),-D2(i),-D2(i-1));}
+    else if(order == 2) for(i=m_start;i<=m_end;i++){if(u(i) > 0) u_Zx(i)=u(i)*this->ENO(dx,D1(i-1),D2(i-2),D2(i-1));else u_Zx(i)=u(i)*this->ENO(dx,D1(i),-D2(i),-D2(i-1));}
     else if(order == 3) for(i=m_start;i<=m_end;i++){if(u(i) > 0)
-        u_Zx(i)=u(i)*ENO(dx,D1(i-1),D2(i-2),D2(i-1),D3(i-3),D3(i-2),D3(i-1));else u_Zx(i)=u(i)*ENO(dx,D1(i),-D2(i),-D2(i-1),D3(i),D3(i-1),D3(i-2));}
+        u_Zx(i)=u(i)*this->ENO(dx,D1(i-1),D2(i-2),D2(i-1),D3(i-3),D3(i-2),D3(i-1));else u_Zx(i)=u(i)*this->ENO(dx,D1(i),-D2(i),-D2(i-1),D3(i),D3(i-1),D3(i-2));}
 }
 //#####################################################################
 template class ADVECTION_HAMILTON_JACOBI_ENO<GRID<VECTOR<float,1> >,float>;

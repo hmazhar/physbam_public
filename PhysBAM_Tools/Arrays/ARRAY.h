@@ -69,7 +69,7 @@ public:
     ARRAY& operator=(const ARRAY& source)
     {ID source_m=source.m;
     if(buffer_size<source_m) Resize_Helper(source_m,false,false);
-    else if(Same_Array(*this,source)) return *this;
+    else if(this->Same_Array(*this,source)) return *this;
     m=source_m;
     for(ID i(1);i<=source_m;i++) (*this)(i)=source(i);
     return *this;}
@@ -79,7 +79,7 @@ public:
     {STATIC_ASSERT(CAN_ASSIGN<T,typename T_ARRAY::ELEMENT>::value);
     ID source_m=source.Size();
     if(buffer_size<source_m) Resize_Helper(source_m,false,false);
-    else if(Same_Array(*this,source)) return *this;
+    else if(this->Same_Array(*this,source)) return *this;
     m=source_m;
     for(ID i(1);i<=source_m;i++) (*this)(i)=source(i);
     return *this;}

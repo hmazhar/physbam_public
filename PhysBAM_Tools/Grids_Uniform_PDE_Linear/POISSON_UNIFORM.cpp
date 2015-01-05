@@ -44,7 +44,7 @@ Find_A_Part_Two(RANGE<TV_INT>& domain,ARRAY<SPARSE_MATRIX_FLAT_NXN<T> >& A_array
             int color=filled_region_colors(iterator.Cell_Index());
             if(color!=-1 && (filled_region_touches_dirichlet(color)||solve_neumann_regions)){const TV_INT& cell_index=iterator.Cell_Index();
                 int matrix_index=cell_index_to_matrix_index(cell_index);
-                SPARSE_MATRIX_FLAT_NXN<T>& A=A_array(filled_region_colors(cell_index));VECTOR_ND<T>& b=b_array(filled_region_colors(cell_index));b(matrix_index)=f(cell_index);
+                SPARSE_MATRIX_FLAT_NXN<T>& A=A_array(filled_region_colors(cell_index));VECTOR_ND<T>& b=b_array(filled_region_colors(cell_index));b(matrix_index)=this->f(cell_index);
                 T diagonal=0;
                 for(int axis=1;axis<=T_GRID::dimension;axis++){TV_INT offset=TV_INT::Axis_Vector(axis);
                     if(filled_region_colors.Valid_Index(cell_index-offset)){
@@ -56,7 +56,7 @@ Find_A_Part_Two(RANGE<TV_INT>& domain,ARRAY<SPARSE_MATRIX_FLAT_NXN<T> >& A_array
                                 int axis_periodic_cell=1+wrap(periodic_offset_cell[axis]-1,grid_counts[axis]);
                                 periodic_offset_cell[axis]=axis_periodic_cell;
                                 A.Set_Element(matrix_index,cell_index_to_matrix_index(periodic_offset_cell),element);}
-                            else if(psi_D(cell_index-offset)) b(matrix_index)-=element*u(cell_index-offset);
+                            else if(this->psi_D(cell_index-offset)) b(matrix_index)-=element*this->u(cell_index-offset);
                             else A.Set_Element(matrix_index,cell_index_to_matrix_index(cell_index-offset),element);}}
                     if(filled_region_colors.Valid_Index(cell_index+offset)){
                         if(!psi_N.Component(axis)(cell_index+offset)){
@@ -67,7 +67,7 @@ Find_A_Part_Two(RANGE<TV_INT>& domain,ARRAY<SPARSE_MATRIX_FLAT_NXN<T> >& A_array
                                 int axis_periodic_cell=1+wrap(periodic_offset_cell[axis]-1,grid_counts[axis]);
                                 periodic_offset_cell[axis]=axis_periodic_cell;
                                 A.Set_Element(matrix_index,cell_index_to_matrix_index(periodic_offset_cell),element);}
-                            else if(psi_D(cell_index+offset)) b(matrix_index)-=element*u(cell_index+offset);
+                            else if(this->psi_D(cell_index+offset)) b(matrix_index)-=element*this->u(cell_index+offset);
                             else A.Set_Element(matrix_index,cell_index_to_matrix_index(cell_index+offset),element);}}}
                 A.Set_Element(matrix_index,matrix_index,diagonal);}} // set diagonal and right hand side
     else
@@ -75,7 +75,7 @@ Find_A_Part_Two(RANGE<TV_INT>& domain,ARRAY<SPARSE_MATRIX_FLAT_NXN<T> >& A_array
             int color=filled_region_colors(iterator.Cell_Index());
             if(color!=-1 && (filled_region_touches_dirichlet(color)||solve_neumann_regions)){const TV_INT& cell_index=iterator.Cell_Index();
                 int matrix_index=cell_index_to_matrix_index(cell_index);
-                SPARSE_MATRIX_FLAT_NXN<T>& A=A_array(filled_region_colors(cell_index));VECTOR_ND<T>& b=b_array(filled_region_colors(cell_index));b(matrix_index)=f(cell_index);
+                SPARSE_MATRIX_FLAT_NXN<T>& A=A_array(filled_region_colors(cell_index));VECTOR_ND<T>& b=b_array(filled_region_colors(cell_index));b(matrix_index)=this->f(cell_index);
                 T diagonal=0;
                 for(int axis=1;axis<=T_GRID::dimension;axis++){TV_INT offset=TV_INT::Axis_Vector(axis);
                     if(filled_region_colors.Valid_Index(cell_index-offset)){
@@ -86,7 +86,7 @@ Find_A_Part_Two(RANGE<TV_INT>& domain,ARRAY<SPARSE_MATRIX_FLAT_NXN<T> >& A_array
                                 int axis_periodic_cell=1+wrap(periodic_offset_cell[axis]-1,grid_counts[axis]);
                                 periodic_offset_cell[axis]=axis_periodic_cell;
                                 A.Set_Element(matrix_index,cell_index_to_matrix_index(periodic_offset_cell),element);}
-                            else if(psi_D(cell_index-offset)) b(matrix_index)-=element*u(cell_index-offset);
+                            else if(this->psi_D(cell_index-offset)) b(matrix_index)-=element*this->u(cell_index-offset);
                             else A.Set_Element(matrix_index,cell_index_to_matrix_index(cell_index-offset),element);}}
                     if(filled_region_colors.Valid_Index(cell_index+offset)){
                         if(!psi_N.Component(axis)(cell_index+offset)){T element=beta_face.Component(axis)(cell_index+offset)*one_over_dx2[axis];
@@ -96,7 +96,7 @@ Find_A_Part_Two(RANGE<TV_INT>& domain,ARRAY<SPARSE_MATRIX_FLAT_NXN<T> >& A_array
                                 int axis_periodic_cell=1+wrap(periodic_offset_cell[axis]-1,grid_counts[axis]);
                                 periodic_offset_cell[axis]=axis_periodic_cell;
                                 A.Set_Element(matrix_index,cell_index_to_matrix_index(periodic_offset_cell),element);}
-                            else if(psi_D(cell_index+offset)) b(matrix_index)-=element*u(cell_index+offset);
+                            else if(this->psi_D(cell_index+offset)) b(matrix_index)-=element*this->u(cell_index+offset);
                             else A.Set_Element(matrix_index,cell_index_to_matrix_index(cell_index+offset),element);}}}
                 A.Set_Element(matrix_index,matrix_index,diagonal);}} // set diagonal and right hand side
 }

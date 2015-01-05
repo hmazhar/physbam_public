@@ -171,7 +171,7 @@ Solve_Subregion(ARRAY<INTERVAL<int> >& interior_indices,ARRAY<ARRAY<INTERVAL<int
     A.Negate();b*=(T)-1;
     VECTOR_ND<T> x(number_of_unknowns),q,s,r,k,z;
     for(int i=1;i<=number_of_unknowns;i++) x(i)=u(matrix_index_to_cell_index(i));
-    Find_Tolerance(b); // needs to happen after b is completely set up
+    this->Find_Tolerance(b); // needs to happen after b is completely set up
     if(pcg.show_results) LOG::cout << "solving " << number_of_unknowns << " cells to tolerance " << tolerance << std::endl;
     DOMAIN_ITERATOR_THREADED_ALPHA<PCG_SPARSE_THREADED<TV>,TV> threaded_iterator(grid.Domain_Indices(1),thread_queue,1,1,2,1);
     static const int min_unknowns_for_threading=100;
