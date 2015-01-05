@@ -96,8 +96,8 @@ private:
 
     template<class T_BLOCK_2,class T_FACE_LOOKUP>
     static VECTOR<T,2> Extrema_Face_X_Transformed(const T_BLOCK_2& block,const T_FACE_LOOKUP& u_min,const T_FACE_LOOKUP& u_max,const VECTOR<T,1>& DX) // between 0 and 1 in the dual cell
-    {if(DX.x<.5) return VECTOR<T,2>(this->Componentwise_Min(block.Face_X_Value(u_min,0),block.Face_X_Value(u_min,1)),Componentwise_Max(block.Face_X_Value(u_max,0),block.Face_X_Value(u_max,1)));
-    else return VECTOR<T,2>(this->Componentwise_Min(block.Face_X_Value(u_min,1),block.Face_X_Value(u_min,2)),Componentwise_Max(block.Face_X_Value(u_max,1),block.Face_X_Value(u_max,2)));}
+    {if(DX.x<.5) return VECTOR<T,2>(Componentwise_Min(block.Face_X_Value(u_min,0),block.Face_X_Value(u_min,1)),Componentwise_Max(block.Face_X_Value(u_max,0),block.Face_X_Value(u_max,1)));
+    else return VECTOR<T,2>(Componentwise_Min(block.Face_X_Value(u_min,1),block.Face_X_Value(u_min,2)),Componentwise_Max(block.Face_X_Value(u_max,1),block.Face_X_Value(u_max,2)));}
 public:
 
     template<class T_ARRAYS_2>
