@@ -18,6 +18,24 @@
 #include <PhysBAM_Geometry/Spatial_Acceleration/TRIANGLE_HIERARCHY.h>
 #include <PhysBAM_Geometry/Topology_Based_Geometry/TRIANGULATED_SURFACE.h>
 using namespace PhysBAM;
+
+//#####################################################################
+// Function Process_Segment
+//#####################################################################
+static void Process_Segment(const int m,const ARRAY<bool,VECTOR<int,3> >& edge_is_blocked,const ARRAY<bool,VECTOR<int,3> >& is_inside,const VECTOR<int,3>& start_index,const int axis,ARRAY<char,VECTOR<int,3> >& vote)
+{
+    typedef VECTOR<int,3> TV_INT;
+    TV_INT index=start_index,increment;increment[axis]=1;
+    int segment_start=1;bool segment_starts_inside=false;
+    for(index[axis]=1;index[axis]<=m;index[axis]++){
+        if(index[axis]>1 && edge_is_blocked(index)){segment_start=index[axis];segment_starts_inside=is_inside(index);}
+        if(index[axis]==m || (index[axis]<m && edge_is_blocked(index+increment))){
+            int segment_end=index[axis];bool segment_ends_inside=index[axis]<m?is_inside(index):false;
+            int vote_increment=(int)segment_starts_inside+(int)segment_ends_inside;
+            TV_INT t=start_index;
+            for(t[axis]=segment_start;t[axis]<=segment_end;t[axis]++) vote(t)+=vote_increment;}}
+}
+
 //#####################################################################
 // Function Compute_Level_Set
 //#####################################################################
@@ -250,22 +268,7 @@ Compute_Level_Set(TRIANGULATED_SURFACE<T>& triangulated_surface,GRID<TV>& grid,A
     if(!triangle_list_defined){delete triangulated_surface.triangle_list;triangulated_surface.triangle_list=0;}
     return true;
 }
-//#####################################################################
-// Function Process_Segment
-//#####################################################################
-static void Process_Segment(const int m,const ARRAY<bool,VECTOR<int,3> >& edge_is_blocked,const ARRAY<bool,VECTOR<int,3> >& is_inside,const VECTOR<int,3>& start_index,const int axis,ARRAY<char,VECTOR<int,3> >& vote)
-{
-    typedef VECTOR<int,3> TV_INT;
-    TV_INT index=start_index,increment;increment[axis]=1;
-    int segment_start=1;bool segment_starts_inside=false;
-    for(index[axis]=1;index[axis]<=m;index[axis]++){
-        if(index[axis]>1 && edge_is_blocked(index)){segment_start=index[axis];segment_starts_inside=is_inside(index);}
-        if(index[axis]==m || (index[axis]<m && edge_is_blocked(index+increment))){
-            int segment_end=index[axis];bool segment_ends_inside=index[axis]<m?is_inside(index):false;
-            int vote_increment=(int)segment_starts_inside+(int)segment_ends_inside;
-            TV_INT t=start_index;
-            for(t[axis]=segment_start;t[axis]<=segment_end;t[axis]++) vote(t)+=vote_increment;}}
-}
+
 //#####################################################################
 template class LEVELSET_MAKER_UNIFORM<float>;
 #ifndef COMPILE_WITHOUT_DOUBLE_SUPPORT
