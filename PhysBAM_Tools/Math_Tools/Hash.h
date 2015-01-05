@@ -21,6 +21,17 @@ namespace PhysBAM{
 template<class TV> class RANGE;
 
 //#####################################################################
+// Define Hash_Reduce
+//#####################################################################
+inline int Hash_Reduce(const bool key);
+inline int Hash_Reduce(const char key);
+inline int Hash_Reduce(const unsigned char key);
+inline int Hash_Reduce(const short key);
+inline int Hash_Reduce(const unsigned short key);
+inline int Hash_Reduce(const int key);
+inline int Hash_Reduce(const unsigned int key);
+
+//#####################################################################
 // Class HASH
 //#####################################################################
 class HASH
