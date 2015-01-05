@@ -414,16 +414,6 @@ Conjugate_With_Diagonal_Matrix(VECTOR_ND<T>& x)
         int end=offsets(i+1);
         for(;index<end;index++) A(index).a*=x(i)*x(A(index).j);}
 }
-
-//#####################################################################
-// Function operator<< prototype
-//#####################################################################
-template class SPARSE_MATRIX_FLAT_NXN<float>;
-template std::ostream& operator<<(std::ostream&,const SPARSE_MATRIX_FLAT_NXN<float>&);
-#ifndef COMPILE_WITHOUT_DOUBLE_SUPPORT
-template class SPARSE_MATRIX_FLAT_NXN<double>;
-template std::ostream& operator<<(std::ostream&,const SPARSE_MATRIX_FLAT_NXN<double>&);
-#endif
 //#####################################################################
 // Function operator<<
 //#####################################################################
@@ -434,4 +424,9 @@ operator<<(std::ostream& output_stream,const SPARSE_MATRIX_FLAT_NXN<T>& A)
     output_stream<<std::endl;}
 return output_stream;}
 //#####################################################################
-
+template class SPARSE_MATRIX_FLAT_NXN<float>;
+template std::ostream& operator<<(std::ostream&,const SPARSE_MATRIX_FLAT_NXN<float>&);
+#ifndef COMPILE_WITHOUT_DOUBLE_SUPPORT
+template class SPARSE_MATRIX_FLAT_NXN<double>;
+template std::ostream& operator<<(std::ostream&,const SPARSE_MATRIX_FLAT_NXN<double>&);
+#endif
