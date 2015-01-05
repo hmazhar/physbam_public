@@ -11,6 +11,7 @@
 #include <PhysBAM_Tools/Grids_Uniform_Interpolation/INTERPOLATION_POLICY_UNIFORM.h>
 #include <PhysBAM_Tools/Interpolation/LINEAR_INTERPOLATION.h>
 #include <PhysBAM_Tools/Log/DEBUG_UTILITIES.h>
+#include <PhysBAM_Tools/Math_Tools/Componentwise_Min_Max.h>
 namespace PhysBAM{
 
 template<class T_GRID>

@@ -13,6 +13,7 @@
 #include <PhysBAM_Tools/Math_Tools/exchange.h>
 #include <PhysBAM_Tools/Math_Tools/Inverse.h>
 #include <PhysBAM_Tools/Math_Tools/max.h>
+#include <PhysBAM_Tools/Math_Tools/sqr.h>
 #include <PhysBAM_Tools/Vectors/ARITHMETIC_POLICY.h>
 #include <PhysBAM_Tools/Vectors/VECTOR_FORWARD.h>
 namespace PhysBAM{
