@@ -16,9 +16,39 @@
 #include <PhysBAM_Tools/Point_Clouds/POINT_CLOUD.h>
 #include <PhysBAM_Tools/Read_Write/Grids_Uniform_Arrays/READ_WRITE_ARRAYS.h>
 using namespace PhysBAM;
+
 //#####################################################################
-// Constructor
+// Fill_Process_Ranks definition (moved to top of file)
+// Fixes error where the function was called before definition
 //#####################################################################
+template<class T> static void Fill_Process_Ranks(GRID<VECTOR<T,1> >& process_grid,ARRAY<int,VECTOR<int,1> >& process_ranks,ARRAY<int>& axes)
+{
+    VECTOR<int,1> extents=process_grid.Domain_Indices().Maximum_Corner();
+    for(int i=1;i<=extents.x;i++)process_ranks(i)=i-1;
+}
+template<class T> static void Fill_Process_Ranks(GRID<VECTOR<T,2> >& process_grid,ARRAY<int,VECTOR<int,2> >& process_ranks,ARRAY<int>& axes)
+{
+    int next_rank=0;
+    VECTOR<int,2> extents=process_grid.Domain_Indices().Maximum_Corner(),half_extents=extents/2;
+    for(int i=1;i<=half_extents[axes(1)];i++)for(int j=1;j<=half_extents[axes(2)];j++)
+        for(int ii=0;ii<2;ii++)for(int jj=0;jj<2;jj++){
+            VECTOR<int,2> permuted_index(2*i+ii-1,2*j+jj-1),index;
+            for(int a=1;a<=2;a++)index[axes(a)]=permuted_index[a];
+            process_ranks(index)=next_rank++;}
+    for(int i=1;i<=extents.x;i++)for(int j=1;j<=extents.y;j++)if(process_ranks(i,j)==-1) process_ranks(i,j)=next_rank++;
+}
+template<class T> static void Fill_Process_Ranks(GRID<VECTOR<T,3> >& process_grid,ARRAY<int,VECTOR<int,3> >& process_ranks,ARRAY<int>& axes)
+{
+    int next_rank=0;
+    VECTOR<int,3> extents=process_grid.Domain_Indices().Maximum_Corner(),half_extents=extents/2;
+    for(int i=1;i<=half_extents[axes(1)];i++)for(int j=1;j<=half_extents[axes(2)];j++)for(int ij=1;ij<=half_extents[axes(3)];ij++)
+        for(int ii=0;ii<2;ii++)for(int jj=0;jj<2;jj++)for(int ijij=0;ijij<2;ijij++){
+            VECTOR<int,3> permuted_index(2*i+ii-1,2*j+jj-1,2*ij+ijij-1),index;
+            for(int a=1;a<=3;a++)index[axes(a)]=permuted_index[a];
+            process_ranks(index)=next_rank++;}
+    for(int i=1;i<=extents.x;i++)for(int j=1;j<=extents.y;j++)for(int ij=1;ij<=extents.z;ij++)if(process_ranks(i,j,ij)==-1) process_ranks(i,j,ij)=next_rank++;
+}
+
 template<class T_GRID> THREADED_UNIFORM_GRID<T_GRID>::
 THREADED_UNIFORM_GRID(ARRAY<THREAD_PACKAGE>& buffers_input,const int tid_input,const int number_of_threads,T_GRID& local_grid_input,const int number_of_ghost_cells_input,
     const bool skip_initialization,const TV_INT& processes_per_dimension,const TV_BOOL& periodic_input)
@@ -139,33 +169,7 @@ THREADED_UNIFORM_GRID(ARRAY<THREAD_PACKAGE>& buffers_input,const int tid_input,c
                     TV_INT my_cell_index=my_iterator.Cell_Index();
                     local_cell_index_to_global_column_index_map(my_cell_index+axis_vector)=neighbor_iterator.Flat_Index()+start_column_index-1;}}}
 }
-template<class T> static void Fill_Process_Ranks(GRID<VECTOR<T,1> >& process_grid,ARRAY<int,VECTOR<int,1> >& process_ranks,ARRAY<int>& axes)
-{
-    VECTOR<int,1> extents=process_grid.Domain_Indices().Maximum_Corner();
-    for(int i=1;i<=extents.x;i++)process_ranks(i)=i-1;
-}
-template<class T> static void Fill_Process_Ranks(GRID<VECTOR<T,2> >& process_grid,ARRAY<int,VECTOR<int,2> >& process_ranks,ARRAY<int>& axes)
-{
-    int next_rank=0;
-    VECTOR<int,2> extents=process_grid.Domain_Indices().Maximum_Corner(),half_extents=extents/2;
-    for(int i=1;i<=half_extents[axes(1)];i++)for(int j=1;j<=half_extents[axes(2)];j++)
-        for(int ii=0;ii<2;ii++)for(int jj=0;jj<2;jj++){
-            VECTOR<int,2> permuted_index(2*i+ii-1,2*j+jj-1),index;
-            for(int a=1;a<=2;a++)index[axes(a)]=permuted_index[a];
-            process_ranks(index)=next_rank++;}
-    for(int i=1;i<=extents.x;i++)for(int j=1;j<=extents.y;j++)if(process_ranks(i,j)==-1) process_ranks(i,j)=next_rank++;
-}
-template<class T> static void Fill_Process_Ranks(GRID<VECTOR<T,3> >& process_grid,ARRAY<int,VECTOR<int,3> >& process_ranks,ARRAY<int>& axes)
-{
-    int next_rank=0;
-    VECTOR<int,3> extents=process_grid.Domain_Indices().Maximum_Corner(),half_extents=extents/2;
-    for(int i=1;i<=half_extents[axes(1)];i++)for(int j=1;j<=half_extents[axes(2)];j++)for(int ij=1;ij<=half_extents[axes(3)];ij++)
-        for(int ii=0;ii<2;ii++)for(int jj=0;jj<2;jj++)for(int ijij=0;ijij<2;ijij++){
-            VECTOR<int,3> permuted_index(2*i+ii-1,2*j+jj-1,2*ij+ijij-1),index;
-            for(int a=1;a<=3;a++)index[axes(a)]=permuted_index[a];
-            process_ranks(index)=next_rank++;}
-    for(int i=1;i<=extents.x;i++)for(int j=1;j<=extents.y;j++)for(int ij=1;ij<=extents.z;ij++)if(process_ranks(i,j,ij)==-1) process_ranks(i,j,ij)=next_rank++;
-}
+
 //#####################################################################
 // Function Initialize
 //#####################################################################
