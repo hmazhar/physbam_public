@@ -23,7 +23,7 @@ Normal(const int aggregate) const
 template<class TV> TV BOX<TV>::
 Surface(const TV& X) const
 {
-    if(!Lazy_Inside(X)) return clamp(X,min_corner,max_corner);
+    if(!this->Lazy_Inside(X)) return clamp(X,min_corner,max_corner);
     TV min_side=X-min_corner,max_side=max_corner-X,result=X;
     int min_argmin=min_side.Arg_Min(),max_argmin=max_side.Arg_Min();
     if(min_side(min_argmin)<=max_side(max_argmin)) result(min_argmin)=min_corner(min_argmin);
@@ -48,7 +48,7 @@ Signed_Distance(const TV& X) const
 template<class TV> TV BOX<TV>::
 Normal(const TV& X) const
 {
-    if(Lazy_Inside(X)){
+    if(this->Lazy_Inside(X)){
         TV phis_max=X-max_corner,phis_min=min_corner-X;
         int axis=TV::Componentwise_Max(phis_min,phis_max).Arg_Max();
         return T(phis_max[axis]>phis_min[axis]?1:-1)*TV::Axis_Vector(axis);}

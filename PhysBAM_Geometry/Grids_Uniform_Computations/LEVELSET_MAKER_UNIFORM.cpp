@@ -80,7 +80,7 @@ Compute_Level_Set(TRIANGULATED_SURFACE<T>& triangulated_surface,GRID<TV>& grid,A
     bool store_initialized_indices=use_fmm;
     if(store_initialized_indices){initialized_indices.Exact_Resize(0);initialized_indices.Preallocate(20);}
 
-    const T surface_thickness_over_two=Surface_Thickness_Over_Two(grid),surface_padding_for_flood_fill=Surface_Padding_For_Flood_Fill(grid);
+    const T surface_thickness_over_two=this->Surface_Thickness_Over_Two(grid),surface_padding_for_flood_fill=this->Surface_Padding_For_Flood_Fill(grid);
 
     const BOX<TV>& grid_domain=grid.domain;
     if(verbose) LOG::Time("Rasterizing Triangles");

@@ -97,11 +97,11 @@ Compute_Psi_N(T_FACE_ARRAYS_BOOL& psi_N,T_FACE_ARRAYS_SCALAR* face_velocities) c
         ARRAY<COLLISION_GEOMETRY_ID> objects;objects_in_cell.Get_Objects_For_Cells(cell1,cell2,collision_geometry_collection.bodies.m,objects);if(!objects.m) continue;
         int axis=iterator.Axis();TV_INT face_index=iterator.Face_Index();COLLISION_GEOMETRY_ID body_id;int count=0;T velocity=0;
         RAY<TV> ray(iterator.First_Cell_Center(),TV::Axis_Vector(axis),true);ray.t_max=(T).5*grid.dX[axis];ray.semi_infinite=false;
-        if(Intersection_With_Any_Simplicial_Object(ray,body_id,&objects)){count++;
+        if(this->Intersection_With_Any_Simplicial_Object(ray,body_id,&objects)){count++;
             velocity=collision_geometry_collection(body_id).Pointwise_Object_Pseudo_Velocity(ray.aggregate_id,ray.Point(ray.t_max),COLLISION_GEOMETRY<TV>::FLUID_COLLISION_GEOMETRY_OLD_STATE,
                 COLLISION_GEOMETRY<TV>::FLUID_COLLISION_GEOMETRY_NEW_STATE)[axis];}
         ray.Initialize(iterator.Second_Cell_Center(),-TV::Axis_Vector(axis),true);ray.t_max=(T).5*grid.dX[axis];ray.semi_infinite=false;
-        if(Intersection_With_Any_Simplicial_Object(ray,body_id,&objects)){count++;
+        if(this->Intersection_With_Any_Simplicial_Object(ray,body_id,&objects)){count++;
             velocity+=collision_geometry_collection(body_id).Pointwise_Object_Pseudo_Velocity(ray.aggregate_id,ray.Point(ray.t_max),COLLISION_GEOMETRY<TV>::FLUID_COLLISION_GEOMETRY_OLD_STATE,
                 COLLISION_GEOMETRY<TV>::FLUID_COLLISION_GEOMETRY_NEW_STATE)[axis];}
         if(count){psi_N.Component(axis)(face_index)=true;if(face_velocities) (*face_velocities).Component(axis)(face_index)=velocity/count;}}
@@ -118,9 +118,9 @@ Compute_Psi_N_Zero_Velocity(T_FACE_ARRAYS_BOOL& psi_N,T_FACE_ARRAYS_SCALAR* face
         ARRAY<COLLISION_GEOMETRY_ID> objects;objects_in_cell.Get_Objects_For_Cells(cell1,cell2,collision_geometry_collection.bodies.m,objects);if(!objects.m) continue;
         int axis=iterator.Axis();TV_INT face_index=iterator.Face_Index();COLLISION_GEOMETRY_ID body_id;int count=0;
         RAY<TV> ray(iterator.First_Cell_Center(),TV::Axis_Vector(axis),true);ray.t_max=(T).5*grid.dX[axis];ray.semi_infinite=false;
-        if(Intersection_With_Any_Simplicial_Object(ray,body_id,&objects)) count++;
+        if(this->Intersection_With_Any_Simplicial_Object(ray,body_id,&objects)) count++;
         ray.Initialize(iterator.Second_Cell_Center(),-TV::Axis_Vector(axis),true);ray.t_max=(T).5*grid.dX[axis];ray.semi_infinite=false;
-        if(Intersection_With_Any_Simplicial_Object(ray,body_id,&objects)) count++;
+        if(this->Intersection_With_Any_Simplicial_Object(ray,body_id,&objects)) count++;
         if(count){psi_N.Component(axis)(face_index)=true;if(face_velocities) (*face_velocities)(axis,face_index)=(T)0;}}
 }
 //#####################################################################

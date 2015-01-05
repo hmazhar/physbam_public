@@ -34,11 +34,11 @@ public:
 
     VECTOR<T,1> Normal(const VECTOR<T,1>& location) const
     {if(normals) return normal_interpolation->Clamped_To_Array(grid,*normals,location).Normalized();
-    else return VECTOR<T,1>((Phi(location+grid.dX)-Phi(location-grid.dX))/(2*grid.dX.x)).Normalized();}
+    else return VECTOR<T,1>((this->Phi(location+grid.dX)-this->Phi(location-grid.dX))/(2*grid.dX.x)).Normalized();}
         
     VECTOR<T,1> Extended_Normal(const VECTOR<T,1>& location) const
     {if(normals) return normal_interpolation->Clamped_To_Array(grid,*normals,grid.Clamp(location)).Normalized();
-    else return VECTOR<T,1>((Extended_Phi(location+grid.dX)-Extended_Phi(location-grid.dX))/(2*grid.dX.x)).Normalized();}
+    else return VECTOR<T,1>((this->Extended_Phi(location+grid.dX)-this->Extended_Phi(location-grid.dX))/(2*grid.dX.x)).Normalized();}
 
     static VECTOR<T,1> Normal_At_Node(const GRID<TV>& grid,const ARRAY<T,VECTOR<int,1> >& phi,const VECTOR<int,1>& index)
     {int i=index.x;return VECTOR<T,1>((phi(i+1)-phi(i-1))*grid.one_over_dX.x).Normalized();}

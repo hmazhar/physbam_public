@@ -44,18 +44,18 @@ public:
     {Update_Leaf_Boxes(start_frame,end_frame,extra_thickness);Update_Nonleaf_Boxes();}
 
     void Update_Leaf_Boxes(const T extra_thickness=0)
-    {Calculate_Bounding_Boxes(box_hierarchy);if(extra_thickness) Thicken_Leaf_Boxes(extra_thickness);}
+    {Calculate_Bounding_Boxes(box_hierarchy);if(extra_thickness) this->Thicken_Leaf_Boxes(extra_thickness);}
 
     template<class T_ARRAY_TV>
     void Update_Leaf_Boxes(const T_ARRAY_TV& X,const T extra_thickness=0) // use X instead of the current particle positions
-    {Calculate_Bounding_Boxes(box_hierarchy,X);if(extra_thickness) Thicken_Leaf_Boxes(extra_thickness);}
+    {Calculate_Bounding_Boxes(box_hierarchy,X);if(extra_thickness) this->Thicken_Leaf_Boxes(extra_thickness);}
     
     template<class T_ARRAY_TV>
     void Update_Leaf_Boxes(const T_ARRAY_TV& start_X,const T_ARRAY_TV& end_X,const T extra_thickness=0) // bound segments moving from start_X to end_X
     {Calculate_Bounding_Boxes(box_hierarchy,start_X,end_X);if(extra_thickness) Thicken_Leaf_Boxes(extra_thickness);}
 
     void Update_Leaf_Boxes(const FRAME<TV>& start_frame,const FRAME<TV>& end_frame,const T extra_thickness=0) // for a moving rigid body
-    {Calculate_Bounding_Boxes(box_hierarchy,start_frame,end_frame);if(extra_thickness) Thicken_Leaf_Boxes(extra_thickness);}
+    {Calculate_Bounding_Boxes(box_hierarchy,start_frame,end_frame);if(extra_thickness) this->Thicken_Leaf_Boxes(extra_thickness);}
 
     void Calculate_Bounding_Boxes(ARRAY<RANGE<TV> >& bounding_boxes)
     {Calculate_Bounding_Boxes(bounding_boxes,particles.X);}

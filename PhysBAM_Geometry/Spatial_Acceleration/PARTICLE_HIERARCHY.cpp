@@ -38,7 +38,7 @@ Initialize_Hierarchy_Using_KD_Tree()
         kd_tree.Create_Left_Balanced_KD_Tree(X_copy);
         leaves=X.Size();}
     parents.Resize(leaves);
-    children.Remove_All();root=Initialize_Hierarchy_Using_KD_Tree_Helper(kd_tree.root_node);
+    children.Remove_All();root=this->Initialize_Hierarchy_Using_KD_Tree_Helper(kd_tree.root_node);
     assert(root==2*leaves-1);box_hierarchy.Resize(root);box_radius.Resize(root);
 }
 //#####################################################################

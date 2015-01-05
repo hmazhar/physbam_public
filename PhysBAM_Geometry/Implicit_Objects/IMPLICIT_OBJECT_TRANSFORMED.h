@@ -171,16 +171,16 @@ public:
     {return Create_Helper((TRANSFORM*)0);}
 
     RAY<TV> Object_Space_Ray(const RAY<TV>& world_space_ray) const
-    {RAY<TV> transformed_ray(Object_Space_Point(world_space_ray.endpoint),Object_Space_Unitless_Vector(world_space_ray.direction));
-    transformed_ray.semi_infinite=world_space_ray.semi_infinite;transformed_ray.t_max=Object_Space_Length(world_space_ray.t_max);
+    {RAY<TV> transformed_ray(this->Object_Space_Point(world_space_ray.endpoint),this->Object_Space_Unitless_Vector(world_space_ray.direction));
+    transformed_ray.semi_infinite=world_space_ray.semi_infinite;transformed_ray.t_max=this->Object_Space_Length(world_space_ray.t_max);
     transformed_ray.aggregate_id=world_space_ray.aggregate_id;
     return transformed_ray;}
 
     T Value(const TV& location) const
-    {return World_Space_Length(object_space_implicit_object(Object_Space_Point(location)));}
+    {return World_Space_Length(object_space_implicit_object(this->Object_Space_Point(location)));}
 
     T Extended_Value(const TV& location) const
-    {return World_Space_Length(object_space_implicit_object->Extended_Phi(Object_Space_Point(location)));}
+    {return this->World_Space_Length(object_space_implicit_object->Extended_Phi(this->Object_Space_Point(location)));}
 
     static std::string Static_Name()
     {return Name_Helper();}
@@ -216,8 +216,8 @@ public:
     T_SYMMETRIC_MATRIX Hessian(const TV& X) const PHYSBAM_OVERRIDE;
     VECTOR<T,d-1> Principal_Curvatures(const TV& X) const PHYSBAM_OVERRIDE
     {
-        VECTOR<T,d-1> curvatures=object_space_implicit_object->Principal_Curvatures(Object_Space_Point(X));
-        for(int i=1;i<=d-1;i++) curvatures(i)=Object_Space_Length(curvatures(i)); // Note: Curvatures transform "backwards"
+        VECTOR<T,d-1> curvatures=object_space_implicit_object->Principal_Curvatures(this->Object_Space_Point(X));
+        for(int i=1;i<=d-1;i++) curvatures(i)=this->Object_Space_Length(curvatures(i)); // Note: Curvatures transform "backwards"
         return curvatures;
     }
     T Integration_Step(const T phi) const PHYSBAM_OVERRIDE;

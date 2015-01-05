@@ -56,22 +56,22 @@ Extrapolate(const T time,const bool fill_ghost_cells)
     Initialize(phi_ghost,done,close,heap,heap_length);
 
     while(heap_length && phi_ghost(heap(1)) <= band_width+isobaric_fix_width){
-        TV_INT index=Remove_Root_From_Heap(phi_ghost,heap,heap_length,close);
+        TV_INT index=this->Remove_Root_From_Heap(phi_ghost,heap,heap_length,close);
         done(index)=true;
         Update_Close_Point(u_ghost,phi_ghost,done,index);
     
         if(collision_aware_extrapolation){
             for(int axis=1;axis<=T_GRID::dimension;axis++){TV_INT axis_vector=TV_INT::Axis_Vector(axis);
                 if(index[axis] != dimension_start[axis] && !done(index-axis_vector) && !close(index-axis_vector) && Neighbor_Visible(axis,index-axis_vector))
-                    Add_To_Heap(phi_ghost,heap,heap_length,close,index-axis_vector);
+                	this->Add_To_Heap(phi_ghost,heap,heap_length,close,index-axis_vector);
                 if(index[axis] != dimension_end[axis] && !done(index+axis_vector) && !close(index+axis_vector) && Neighbor_Visible(axis,index))
-                    Add_To_Heap(phi_ghost,heap,heap_length,close,index+axis_vector);}}
+                	this->Add_To_Heap(phi_ghost,heap,heap_length,close,index+axis_vector);}}
         else{
             for(int axis=1;axis<=T_GRID::dimension;axis++){TV_INT axis_vector=TV_INT::Axis_Vector(axis);
                 if(index[axis] != dimension_start[axis] && !done(index-axis_vector) && !close(index-axis_vector))
-                    Add_To_Heap(phi_ghost,heap,heap_length,close,index-axis_vector);
+                	this->Add_To_Heap(phi_ghost,heap,heap_length,close,index-axis_vector);
                 if(index[axis] != dimension_end[axis] && !done(index+axis_vector) && !close(index+axis_vector))
-                    Add_To_Heap(phi_ghost,heap,heap_length,close,index+axis_vector);}}}
+                	this->Add_To_Heap(phi_ghost,heap,heap_length,close,index+axis_vector);}}}
 
     T_ARRAYS_T2_BASE::Get(u,u_ghost);
     boundary->Apply_Boundary_Condition(node_grid,u,time);
@@ -93,16 +93,16 @@ Initialize(const T_ARRAYS_BASE& phi,T_ARRAYS_BOOL_BASE& done,T_ARRAYS_BOOL_BASE&
         for(NODE_ITERATOR iterator(node_grid,ghost_cells);iterator.Valid();iterator.Next()) if(done(iterator.Node_Index())){TV_INT index=iterator.Node_Index();
             for(int axis=1;axis<=T_GRID::dimension;axis++){TV_INT axis_vector=TV_INT::Axis_Vector(axis);
                 if(index[axis] != dimension_start[axis] && !done(index-axis_vector) && !close(index-axis_vector) && phi(index-axis_vector) > 0 && Neighbor_Visible(axis,index-axis_vector))
-                    Add_To_Heap(phi,heap,heap_length,close,index-axis_vector);
+                    this->Add_To_Heap(phi,heap,heap_length,close,index-axis_vector);
                 if(index[axis] != dimension_end[axis] && !done(index+axis_vector) && !close(index+axis_vector) && phi(index+axis_vector) > 0 && Neighbor_Visible(axis,index))
-                    Add_To_Heap(phi,heap,heap_length,close,index+axis_vector);}}}
+                	this->Add_To_Heap(phi,heap,heap_length,close,index+axis_vector);}}}
     else{
         for(NODE_ITERATOR iterator(node_grid,ghost_cells);iterator.Valid();iterator.Next()) if(done(iterator.Node_Index())){TV_INT index=iterator.Node_Index();
             for(int axis=1;axis<=T_GRID::dimension;axis++){TV_INT axis_vector=TV_INT::Axis_Vector(axis);
                 if(index[axis] != dimension_start[axis] && !done(index-axis_vector) && !close(index-axis_vector) && phi(index-axis_vector) > 0)
-                    Add_To_Heap(phi,heap,heap_length,close,index-axis_vector);
+                	this->Add_To_Heap(phi,heap,heap_length,close,index-axis_vector);
                 if(index[axis] != dimension_end[axis] && !done(index+axis_vector) && !close(index+axis_vector) && phi(index+axis_vector) > 0)
-                    Add_To_Heap(phi,heap,heap_length,close,index+axis_vector);}}}
+                	this->Add_To_Heap(phi,heap,heap_length,close,index+axis_vector);}}}
 }
 //#####################################################################
 // Function Update_Close_Point

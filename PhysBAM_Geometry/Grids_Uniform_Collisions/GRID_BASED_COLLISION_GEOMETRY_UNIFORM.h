@@ -92,27 +92,27 @@ public:
 
     bool Latest_Cell_Crossover(const TV_INT& cell_index,const T dt) const
     {COLLISION_GEOMETRY_ID body_id;int aggregate_id;TV initial_hit_point,X=grid.Center(cell_index);
-    return Latest_Crossover(X,X,dt,body_id,aggregate_id,initial_hit_point);}
+    return this->Latest_Crossover(X,X,dt,body_id,aggregate_id,initial_hit_point);}
 
     bool Latest_Cell_Crossover_And_Velocity(const TV_INT& cell_index,const T dt,TV& velocity) const
     {COLLISION_GEOMETRY_ID body_id;int aggregate_id;TV initial_hit_point,X=grid.Center(cell_index);
-    if(Latest_Crossover(X,X,dt,body_id,aggregate_id,initial_hit_point)){
+    if(this->Latest_Crossover(X,X,dt,body_id,aggregate_id,initial_hit_point)){
         velocity=collision_geometry_collection(body_id).Pointwise_Object_Velocity(aggregate_id,initial_hit_point);return true;}
     return false;}
 
     bool Latest_Face_Crossover(const TV_INT& face_index,const int axis,const T dt) const
     {COLLISION_GEOMETRY_ID body_id;int aggregate_id;TV initial_hit_point,X=grid.Axis_X_Face(face_index,axis);
-    return Latest_Crossover(X,X,dt,body_id,aggregate_id,initial_hit_point);}
+    return this->Latest_Crossover(X,X,dt,body_id,aggregate_id,initial_hit_point);}
 
     bool Latest_Velocity_Crossover(const int axis,const TV_INT& face_index,const T dt,T& face_velocity) const
     {COLLISION_GEOMETRY_ID body_id;int aggregate_id;TV initial_hit_point,X=grid.Face(axis,face_index);
-    if(Latest_Crossover(X,X,dt,body_id,aggregate_id,initial_hit_point)){
+    if(this->Latest_Crossover(X,X,dt,body_id,aggregate_id,initial_hit_point)){
         face_velocity=collision_geometry_collection(body_id).Pointwise_Object_Velocity(aggregate_id,initial_hit_point)[axis];return true;}
     return false;}
 
     bool Latest_Velocity_Crossover(const int side,const int axis,const TV_INT& face_index,const T dt,T& face_velocity) const
     {COLLISION_GEOMETRY_ID body_id;int aggregate_id;TV initial_hit_point,X=grid.Face(axis,face_index);
-    if(Latest_Crossover(X,X,dt,body_id,aggregate_id,initial_hit_point)){
+    if(this->Latest_Crossover(X,X,dt,body_id,aggregate_id,initial_hit_point)){
         face_velocity=collision_geometry_collection(body_id).Pointwise_Object_Velocity(aggregate_id,initial_hit_point)[axis];return true;}
     ARRAY<COLLISION_GEOMETRY_ID> objects;objects_in_cell.Get_Objects_For_Cells(face_index,face_index-TV_INT::Axis_Vector(axis),collision_geometry_collection.bodies.m,objects);if(!objects.m) return false;
     int triangle_id;
@@ -122,7 +122,7 @@ public:
     return false;}
 
     bool Any_Crossover(const TV& start_X,const TV& end_X,const T dt) const
-    {return Any_Simplex_Crossover(start_X,end_X,dt);} // TODO: use object ids
+    {return this->Any_Simplex_Crossover(start_X,end_X,dt);} // TODO: use object ids
 
     TV Object_Velocity(const COLLISION_GEOMETRY_ID body_id,const int aggregate_id,const TV& X) const
     {return collision_geometry_collection(body_id).Pointwise_Object_Velocity(aggregate_id,X);}

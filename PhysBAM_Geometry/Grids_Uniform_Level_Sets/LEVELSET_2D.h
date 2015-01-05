@@ -33,13 +33,13 @@ public:
 
     VECTOR<T,2> Normal(const VECTOR<T,2>& location) const
     {if(normals) return normal_interpolation->Clamped_To_Array(grid,*normals,location).Normalized();
-    else return VECTOR<T,2>((Phi(VECTOR<T,2>(location.x+grid.dX.x,location.y))-Phi(VECTOR<T,2>(location.x-grid.dX.x,location.y)))/(2*grid.dX.x),
-        (Phi(VECTOR<T,2>(location.x,location.y+grid.dX.y))-Phi(VECTOR<T,2>(location.x,location.y-grid.dX.y)))/(2*grid.dX.y)).Normalized();}
+    else return VECTOR<T,2>((this->Phi(VECTOR<T,2>(location.x+grid.dX.x,location.y))-this->Phi(VECTOR<T,2>(location.x-grid.dX.x,location.y)))/(2*grid.dX.x),
+        (this->Phi(VECTOR<T,2>(location.x,location.y+grid.dX.y))-this->Phi(VECTOR<T,2>(location.x,location.y-grid.dX.y)))/(2*grid.dX.y)).Normalized();}
 
     VECTOR<T,2> Extended_Normal(const VECTOR<T,2>& location) const
     {if(normals) return normal_interpolation->Clamped_To_Array(grid,*normals,grid.Clamp(location)).Normalized();
-    else return VECTOR<T,2>((Extended_Phi(VECTOR<T,2>(location.x+grid.dX.x,location.y))-Extended_Phi(VECTOR<T,2>(location.x-grid.dX.x,location.y)))/(2*grid.dX.x),
-        (Extended_Phi(VECTOR<T,2>(location.x,location.y+grid.dX.y))-Extended_Phi(VECTOR<T,2>(location.x,location.y-grid.dX.y)))/(2*grid.dX.y)).Normalized();}
+    else return VECTOR<T,2>((this->Extended_Phi(VECTOR<T,2>(location.x+grid.dX.x,location.y))-this->Extended_Phi(VECTOR<T,2>(location.x-grid.dX.x,location.y)))/(2*grid.dX.x),
+        (this->Extended_Phi(VECTOR<T,2>(location.x,location.y+grid.dX.y))-this->Extended_Phi(VECTOR<T,2>(location.x,location.y-grid.dX.y)))/(2*grid.dX.y)).Normalized();}
 
     static VECTOR<T,2> Normal_At_Node(const T_GRID& grid,const ARRAY<T,VECTOR<int,2> >& phi,const VECTOR<int,2>& index)
     {int i=index.x,j=index.y;return VECTOR<T,2>((phi(i+1,j)-phi(i-1,j))*grid.one_over_dX.x,(phi(i,j+1)-phi(i,j-1))*grid.one_over_dX.y).Normalized();}

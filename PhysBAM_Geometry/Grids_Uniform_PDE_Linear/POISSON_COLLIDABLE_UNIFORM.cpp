@@ -105,19 +105,19 @@ Find_Constant_beta_Multiphase(ARRAY<T_ARRAYS_SCALAR>& phis_ghost)
     if(GFM || smear_beta){
         for(FACE_ITERATOR iterator(grid);iterator.Valid();iterator.Next()){
             // use the beta from the non dirichlet region for dirichlet boundary conditions
-            if(psi_D(iterator.First_Cell_Index())) beta_face.Component(iterator.Axis())(iterator.Face_Index())=levelset.Region_Value(iterator.Second_Cell_Index(),beta_multiphase); 
-            else if(psi_D(iterator.Second_Cell_Index())) beta_face.Component(iterator.Axis())(iterator.Face_Index())=levelset.Region_Value(iterator.First_Cell_Index(),beta_multiphase);
+            if(this->psi_D(iterator.First_Cell_Index())) beta_face.Component(iterator.Axis())(iterator.Face_Index())=levelset.Region_Value(iterator.Second_Cell_Index(),beta_multiphase);
+            else if(this->psi_D(iterator.Second_Cell_Index())) beta_face.Component(iterator.Axis())(iterator.Face_Index())=levelset.Region_Value(iterator.First_Cell_Index(),beta_multiphase);
             else beta_face.Component(iterator.Axis())(iterator.Face_Index())=levelset.Heaviside(iterator.First_Cell_Index(),iterator.Second_Cell_Index(),beta_multiphase,half_width);}}
     else{ // smear 1/beta for the delta function method
         ARRAY<T> rho_multiphase(beta_multiphase.m);for(int i=1;i<=rho_multiphase.m;i++)rho_multiphase(i)=1/beta_multiphase(i);
         for(FACE_ITERATOR iterator(grid);iterator.Valid();iterator.Next()){
             // use the beta from the non dirichlet region for dirichlet boundary conditions
-            if(psi_D(iterator.First_Cell_Index())) beta_face.Component(iterator.Axis())(iterator.Face_Index())=levelset.Region_Value(iterator.Second_Cell_Index(),beta_multiphase); 
-            else if(psi_D(iterator.Second_Cell_Index())) beta_face.Component(iterator.Axis())(iterator.Face_Index())=levelset.Region_Value(iterator.First_Cell_Index(),beta_multiphase);
+            if(this->psi_D(iterator.First_Cell_Index())) beta_face.Component(iterator.Axis())(iterator.Face_Index())=levelset.Region_Value(iterator.Second_Cell_Index(),beta_multiphase);
+            else if(this->psi_D(iterator.Second_Cell_Index())) beta_face.Component(iterator.Axis())(iterator.Face_Index())=levelset.Region_Value(iterator.First_Cell_Index(),beta_multiphase);
             else beta_face.Component(iterator.Axis())(iterator.Face_Index())=1/levelset.Heaviside(iterator.First_Cell_Index(),iterator.Second_Cell_Index(),rho_multiphase,half_width);}}
     if(GFM){ // adjust beta near interface
         for(FACE_ITERATOR iterator(grid);iterator.Valid();iterator.Next()) 
-            if(!(psi_D(iterator.First_Cell_Index())||psi_D(iterator.Second_Cell_Index()))&&levelset.Interface(iterator.First_Cell_Index(),iterator.Second_Cell_Index())){
+            if(!(this->psi_D(iterator.First_Cell_Index())||this->psi_D(iterator.Second_Cell_Index()))&&levelset.Interface(iterator.First_Cell_Index(),iterator.Second_Cell_Index())){
                 T denominator=levelset.Convex_Average(iterator.First_Cell_Index(),iterator.Second_Cell_Index(),beta_multiphase);
                 if(denominator == 0) beta_face.Component(iterator.Axis())(iterator.Face_Index())=0; // fix for overloading this class for implicit viscosity (with viscosity=0)
                 else beta_face.Component(iterator.Axis())(iterator.Face_Index())=levelset.Region_Value(iterator.First_Cell_Index(),beta_multiphase)*
@@ -144,10 +144,10 @@ Add_Jump_To_b(const T_ARRAYS_SCALAR& phi_ghost)
 
     for(FACE_ITERATOR iterator(grid);iterator.Valid();iterator.Next()){
         TV_INT first_cell_index=iterator.First_Cell_Index(),second_cell_index=iterator.Second_Cell_Index(),face_index=iterator.Face_Index();int axis=iterator.Axis();
-        if(LEVELSET_UTILITIES<T>::Interface(phi_ghost(first_cell_index),phi_ghost(second_cell_index)) && !psi_N.Component(axis)(face_index) && !(psi_D(first_cell_index) && psi_D(second_cell_index))){
+        if(LEVELSET_UTILITIES<T>::Interface(phi_ghost(first_cell_index),phi_ghost(second_cell_index)) && !psi_N.Component(axis)(face_index) && !(this->psi_D(first_cell_index) && this->psi_D(second_cell_index))){
             T jump=beta_face.Component(axis)(face_index)*one_over_dx2[axis]*
                 LEVELSET_UTILITIES<T>::Average(phi_ghost(first_cell_index),u_jump(first_cell_index),phi_ghost(second_cell_index),u_jump(second_cell_index));
-            f(first_cell_index)-=LEVELSET_UTILITIES<T>::Sign(phi_ghost(first_cell_index))*jump;f(second_cell_index)-=LEVELSET_UTILITIES<T>::Sign(phi_ghost(second_cell_index))*jump;}}
+            this->f(first_cell_index)-=LEVELSET_UTILITIES<T>::Sign(phi_ghost(first_cell_index))*jump;this->f(second_cell_index)-=LEVELSET_UTILITIES<T>::Sign(phi_ghost(second_cell_index))*jump;}}
 }
 //#####################################################################
 // Function Add_Jump_To_b_Multiphase
@@ -160,10 +160,10 @@ Add_Jump_To_b_Multiphase(ARRAY<T_ARRAYS_SCALAR>& phis_ghost)
     LEVELSET_MULTIPLE_UNIFORM<T_GRID> levelset(grid,phis_ghost);levelset.Recreate_Levelsets();
     for(FACE_ITERATOR iterator(grid);iterator.Valid();iterator.Next()){
         TV_INT first_cell_index=iterator.First_Cell_Index(),second_cell_index=iterator.Second_Cell_Index(),face_index=iterator.Face_Index();int axis=iterator.Axis();
-        if(levelset.Interface(first_cell_index,second_cell_index) && !psi_N.Component(axis)(face_index) && !(psi_D(first_cell_index) && psi_D(second_cell_index))){
+        if(levelset.Interface(first_cell_index,second_cell_index) && !psi_N.Component(axis)(face_index) && !(this->psi_D(first_cell_index) && this->psi_D(second_cell_index))){
             int region_1,region_2;T phi_1,phi_2;levelset.Minimum_Regions(first_cell_index,second_cell_index,region_1,region_2,phi_1,phi_2);
             T jump=beta_face.Component(axis)(face_index)*one_over_dx2[axis]*u_jump_face.Component(axis)(face_index);
-            f(first_cell_index)-=LEVELSET_MULTIPLE_UNIFORM<T_GRID>::Sign(region_1,region_2)*jump;f(second_cell_index)-=LEVELSET_MULTIPLE_UNIFORM<T_GRID>::Sign(region_2,region_1)*jump;}}
+            this->f(first_cell_index)-=LEVELSET_MULTIPLE_UNIFORM<T_GRID>::Sign(region_1,region_2)*jump;this->f(second_cell_index)-=LEVELSET_MULTIPLE_UNIFORM<T_GRID>::Sign(region_2,region_1)*jump;}}
 }
 //#####################################################################
 // Function Add_Derivative_Jump_To_b
@@ -178,13 +178,13 @@ Add_Derivative_Jump_To_b(const T_ARRAYS_SCALAR& phi_ghost)
 
     for(FACE_ITERATOR iterator(grid);iterator.Valid();iterator.Next()){
         TV_INT first_cell_index=iterator.First_Cell_Index(),second_cell_index=iterator.Second_Cell_Index(),face_index=iterator.Face_Index();int axis=iterator.Axis();
-        if(LEVELSET_UTILITIES<T>::Interface(phi_ghost(first_cell_index),phi_ghost(second_cell_index)) && !psi_N.Component(axis)(face_index) && !(psi_D(first_cell_index) && psi_D(second_cell_index))){
+        if(LEVELSET_UTILITIES<T>::Interface(phi_ghost(first_cell_index),phi_ghost(second_cell_index)) && !psi_N.Component(axis)(face_index) && !(this->psi_D(first_cell_index) && this->psi_D(second_cell_index))){
             T jump=LEVELSET_UTILITIES<T>::Sign(phi_ghost(first_cell_index))*beta_face.Component(axis)(face_index)*one_over_dx[axis]*
                   LEVELSET_UTILITIES<T>::Average(phi_ghost(first_cell_index),beta_un_jump(first_cell_index)*
                   (*levelset->normals)(first_cell_index)[axis],phi_ghost(second_cell_index),beta_un_jump(second_cell_index)*(*levelset->normals)(second_cell_index)[axis]);
             T theta=LEVELSET_UTILITIES<T>::Theta(phi_ghost(first_cell_index),phi_ghost(second_cell_index));
-            f(first_cell_index)-=(1-theta)*jump/LEVELSET_UTILITIES<T>::Heaviside(phi_ghost(second_cell_index),beta_minus,beta_plus);
-            f(second_cell_index)-=theta*jump/LEVELSET_UTILITIES<T>::Heaviside(phi_ghost(first_cell_index),beta_minus,beta_plus);}}
+            this->f(first_cell_index)-=(1-theta)*jump/LEVELSET_UTILITIES<T>::Heaviside(phi_ghost(second_cell_index),beta_minus,beta_plus);
+            this->f(second_cell_index)-=theta*jump/LEVELSET_UTILITIES<T>::Heaviside(phi_ghost(first_cell_index),beta_minus,beta_plus);}}
 
     if(!normals_defined){delete levelset->normals;levelset->normals=0;}
 }
@@ -208,20 +208,20 @@ Apply_Second_Order_Cut_Cell_Method(RANGE<TV_INT>& domain,ARRAY<SPARSE_MATRIX_FLA
             TV_INT first_cell_index=iterator.First_Cell_Index(),second_cell_index=iterator.Second_Cell_Index(),face_index=iterator.Face_Index();int axis=iterator.Axis();
             if(!psi_N.Component(axis)(face_index) && LEVELSET_UTILITIES<T>::Interface(levelset->phi(first_cell_index),levelset->phi(second_cell_index))){
                 T theta=LEVELSET_UTILITIES<T>::Theta(levelset->phi(first_cell_index),levelset->phi(second_cell_index));
-                if(psi_D(first_cell_index) && !psi_D(second_cell_index) && domain.Lazy_Inside(second_cell_index)){ // interface is to the negative side of second cell
+                if(this->psi_D(first_cell_index) && !this->psi_D(second_cell_index) && domain.Lazy_Inside(second_cell_index)){ // interface is to the negative side of second cell
                     int color=filled_region_colors(second_cell_index);int matrix_index=cell_index_to_matrix_index(second_cell_index);
                     T A_right_i=beta_face.Component(axis)(face_index)*minus_one_over_dx_squared[axis];A_array(color).Add_Element(matrix_index,matrix_index,-A_right_i);
-                    b_array(color)(matrix_index)-=A_right_i*u(first_cell_index); 
-                    T beta_ghost=(beta_interface_face.Component(axis)(face_index)-theta*variable_beta(second_cell_index))/max(1-theta,second_order_cut_cell_threshold);
-                    T beta_new=(T).5*(beta_ghost+variable_beta(second_cell_index));
+                    b_array(color)(matrix_index)-=A_right_i*this->u(first_cell_index);
+                    T beta_ghost=(beta_interface_face.Component(axis)(face_index)-theta*this->variable_beta(second_cell_index))/max(1-theta,second_order_cut_cell_threshold);
+                    T beta_new=(T).5*(beta_ghost+this->variable_beta(second_cell_index));
                     A_right_i=beta_new/max((1-theta),second_order_cut_cell_threshold)*minus_one_over_dx_squared[axis];
                     A_array(color).Add_Element(matrix_index,matrix_index,A_right_i);b_array(color)(matrix_index)+=A_right_i*u_interface.Component(axis)(face_index);}
-                else if(psi_D(second_cell_index) && !psi_D(first_cell_index) && domain.Lazy_Inside(first_cell_index)){ // interface is to the positive side of first cell
+                else if(this->psi_D(second_cell_index) && !this->psi_D(first_cell_index) && domain.Lazy_Inside(first_cell_index)){ // interface is to the positive side of first cell
                     int color=filled_region_colors(first_cell_index);int matrix_index=cell_index_to_matrix_index(first_cell_index);
                     T A_right_i=beta_face.Component(axis)(face_index)*minus_one_over_dx_squared[axis];A_array(color).Add_Element(matrix_index,matrix_index,-A_right_i);
-                    b_array(color)(matrix_index)-=A_right_i*u(second_cell_index);
-                    T beta_ghost=(beta_interface_face.Component(axis)(face_index)+(theta-1)*variable_beta(first_cell_index))/max(theta,second_order_cut_cell_threshold);
-                    T beta_new=(T).5*(beta_ghost+variable_beta(first_cell_index));
+                    b_array(color)(matrix_index)-=A_right_i*this->u(second_cell_index);
+                    T beta_ghost=(beta_interface_face.Component(axis)(face_index)+(theta-1)*this->variable_beta(first_cell_index))/max(theta,second_order_cut_cell_threshold);
+                    T beta_new=(T).5*(beta_ghost+this->variable_beta(first_cell_index));
                     A_right_i=beta_new/max(theta,second_order_cut_cell_threshold)*minus_one_over_dx_squared[axis];
                     A_array(color).Add_Element(matrix_index,matrix_index,A_right_i);b_array(color)(matrix_index)+=A_right_i*u_interface.Component(axis)(face_index);}}}}
     else for(int i=1;i<=TV::dimension;i++){
@@ -235,16 +235,16 @@ Apply_Second_Order_Cut_Cell_Method(RANGE<TV_INT>& domain,ARRAY<SPARSE_MATRIX_FLA
             TV_INT first_cell_index=iterator.First_Cell_Index(),second_cell_index=iterator.Second_Cell_Index(),face_index=iterator.Face_Index();int axis=iterator.Axis();
             if(!psi_N.Component(axis)(face_index) && LEVELSET_UTILITIES<T>::Interface(levelset->phi(first_cell_index),levelset->phi(second_cell_index))){
                 T theta=LEVELSET_UTILITIES<T>::Theta(levelset->phi(first_cell_index),levelset->phi(second_cell_index));
-                if(psi_D(first_cell_index) && !psi_D(second_cell_index) && domain.Lazy_Inside(second_cell_index)){ // interface is to the negative side of second cell
+                if(this->psi_D(first_cell_index) && !this->psi_D(second_cell_index) && domain.Lazy_Inside(second_cell_index)){ // interface is to the negative side of second cell
                     int color=filled_region_colors(second_cell_index);int matrix_index=cell_index_to_matrix_index(second_cell_index);
                     T A_right_i=beta_face.Component(axis)(face_index)*minus_one_over_dx_squared[axis];A_array(color).Add_Element(matrix_index,matrix_index,-A_right_i);
-                    b_array(color)(matrix_index)-=A_right_i*u(first_cell_index); 
+                    b_array(color)(matrix_index)-=A_right_i*this->u(first_cell_index);
                     A_right_i/=max((1-theta),second_order_cut_cell_threshold);
                     A_array(color).Add_Element(matrix_index,matrix_index,A_right_i);b_array(color)(matrix_index)+=A_right_i*u_interface.Component(axis)(face_index);}
-                else if(psi_D(second_cell_index) && !psi_D(first_cell_index) && domain.Lazy_Inside(first_cell_index)){ // interface is to the positive side of first cell
+                else if(this->psi_D(second_cell_index) && !this->psi_D(first_cell_index) && domain.Lazy_Inside(first_cell_index)){ // interface is to the positive side of first cell
                     int color=filled_region_colors(first_cell_index);int matrix_index=cell_index_to_matrix_index(first_cell_index);
                     T A_right_i=beta_face.Component(axis)(face_index)*minus_one_over_dx_squared[axis];A_array(color).Add_Element(matrix_index,matrix_index,-A_right_i);
-                    b_array(color)(matrix_index)-=A_right_i*u(second_cell_index);
+                    b_array(color)(matrix_index)-=A_right_i*this->u(second_cell_index);
                     A_right_i/=max(theta,second_order_cut_cell_threshold);
                     A_array(color).Add_Element(matrix_index,matrix_index,A_right_i);b_array(color)(matrix_index)+=A_right_i*u_interface.Component(axis)(face_index);}}}}
 }

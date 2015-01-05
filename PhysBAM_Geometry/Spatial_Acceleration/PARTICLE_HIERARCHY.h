@@ -36,10 +36,10 @@ public:
     {Update_Leaf_Boxes(X,extra_thickness);Update_Nonleaf_Boxes();}
 
     void Update_Leaf_Boxes(const T extra_thickness=0)
-    {Calculate_Bounding_Boxes(box_hierarchy);if(extra_thickness) Thicken_Leaf_Boxes(extra_thickness);}
+    {Calculate_Bounding_Boxes(box_hierarchy);if(extra_thickness) this->Thicken_Leaf_Boxes(extra_thickness);}
 
     template<class T_ARRAY_TV> void Update_Leaf_Boxes(const T_ARRAY_TV& X,const T extra_thickness=0)
-    {Calculate_Bounding_Boxes(box_hierarchy,X);if(extra_thickness) Thicken_Leaf_Boxes(extra_thickness);}
+    {Calculate_Bounding_Boxes(box_hierarchy,X);if(extra_thickness) this->Thicken_Leaf_Boxes(extra_thickness);}
 
     void Intersection_List(const TV& point,ARRAY<int>& intersection_list,const T thickness_over_two=0) const PHYSBAM_OVERRIDE
     {if(particles_per_group){

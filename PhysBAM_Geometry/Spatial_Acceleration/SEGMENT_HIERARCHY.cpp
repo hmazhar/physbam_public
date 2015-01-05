@@ -45,7 +45,7 @@ Initialize_Hierarchy_Using_KD_Tree()
         int i,j;segment_mesh.elements(t).Get(i,j);centroids(t)=(T).5*(particles.X(i)+particles.X(j));}
     kd_tree.Create_Left_Balanced_KD_Tree(centroids);
     leaves=segment_mesh.elements.m;parents.Resize(leaves);children.Remove_All();
-    root=Initialize_Hierarchy_Using_KD_Tree_Helper(kd_tree.root_node);assert(root==2*leaves-1);
+    root=this->Initialize_Hierarchy_Using_KD_Tree_Helper(kd_tree.root_node);assert(root==2*leaves-1);
     box_hierarchy.Resize(root);box_radius.Resize(root);
 }
 //#####################################################################

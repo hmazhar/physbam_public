@@ -53,7 +53,7 @@ template<class TV,class TRANSFORM> void IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM
 Update_Box()
 {
     object_space_implicit_object->Update_Box();
-    box=World_Space_Box(object_space_implicit_object->box);
+    box=this->World_Space_Box(object_space_implicit_object->box);
 }
 template<class TV,class TRANSFORM> void IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Update_Minimum_Cell_Size(const int maximum_depth)
@@ -63,12 +63,12 @@ Update_Minimum_Cell_Size(const int maximum_depth)
 template<class TV,class TRANSFORM> typename TV::SCALAR IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Minimum_Cell_Size_Within_Box(const RANGE<TV>& box) const
 {
-    return World_Space_Length(object_space_implicit_object->Minimum_Cell_Size_Within_Box(Object_Space_Box(object_space_implicit_object->box)));
+    return this->World_Space_Length(object_space_implicit_object->Minimum_Cell_Size_Within_Box(this->Object_Space_Box(object_space_implicit_object->box)));
 }
 template<class TV,class TRANSFORM> typename TV::SCALAR IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 operator()(const TV& location) const
 {
-    return World_Space_Length((*object_space_implicit_object)(Object_Space_Point(location)));
+    return this->World_Space_Length((*object_space_implicit_object)(this->Object_Space_Point(location)));
 }
 template<class TV,class TRANSFORM> typename TV::SCALAR IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Signed_Distance(const TV& location) const
@@ -83,17 +83,17 @@ Extended_Phi(const TV& location) const
 template<class TV,class TRANSFORM> typename TV::SCALAR IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Phi_Secondary(const TV& location) const
 {
-    return World_Space_Length(object_space_implicit_object->Phi_Secondary(Object_Space_Point(location)));
+    return this->World_Space_Length(object_space_implicit_object->Phi_Secondary(this->Object_Space_Point(location)));
 }
 template<class TV,class TRANSFORM> TV IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Normal(const TV& location,const int aggregate) const
 {
-    return World_Space_Unitless_Vector(object_space_implicit_object->Normal(Object_Space_Point(location),aggregate));
+    return this->World_Space_Unitless_Vector(object_space_implicit_object->Normal(this->Object_Space_Point(location),aggregate));
 }
 template<class TV,class TRANSFORM> TV IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Extended_Normal(const TV& location,const int aggregate) const
 {
-    return World_Space_Unitless_Vector(object_space_implicit_object->Extended_Normal(Object_Space_Point(location),aggregate));
+    return this->World_Space_Unitless_Vector(object_space_implicit_object->Extended_Normal(this->Object_Space_Point(location),aggregate));
 }
 template<class TV,class TRANSFORM> void IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Compute_Normals()
@@ -108,88 +108,88 @@ Compute_Cell_Minimum_And_Maximum(const bool recompute_if_exists)
 template<class TV,class TRANSFORM> void IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Rescale(const T scaling_factor)
 {
-    if(!Scale_Transform(scaling_factor)) object_space_implicit_object->Rescale(scaling_factor);
+    if(!this->Scale_Transform(scaling_factor)) object_space_implicit_object->Rescale(scaling_factor);
 }
 template<class TV,class TRANSFORM> void IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Inflate(const T inflation_distance)
 {
-    object_space_implicit_object->Inflate(Object_Space_Length(inflation_distance));
+    object_space_implicit_object->Inflate(this->Object_Space_Length(inflation_distance));
 }
 template<class TV,class TRANSFORM> bool IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Inside(const TV& location,const T thickness_over_two) const
 {
-    return object_space_implicit_object->Inside(Object_Space_Point(location),Object_Space_Length(thickness_over_two));
+    return object_space_implicit_object->Inside(this->Object_Space_Point(location),this->Object_Space_Length(thickness_over_two));
 }
 template<class TV,class TRANSFORM> bool IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Lazy_Inside(const TV& location,const T contour_value) const
 {
-    return object_space_implicit_object->Lazy_Inside(Object_Space_Point(location),Object_Space_Length(contour_value));
+    return object_space_implicit_object->Lazy_Inside(this->Object_Space_Point(location),this->Object_Space_Length(contour_value));
 }
 template<class TV,class TRANSFORM> bool IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Lazy_Inside_And_Value(const TV& location,T& phi,const T contour_value) const
 {
-    bool result=object_space_implicit_object->Lazy_Inside_And_Value(Object_Space_Point(location),phi,Object_Space_Length(contour_value));
-    phi=World_Space_Length(phi);
+    bool result=object_space_implicit_object->Lazy_Inside_And_Value(this->Object_Space_Point(location),phi,this->Object_Space_Length(contour_value));
+    phi=this->World_Space_Length(phi);
     return result;
 }
 template<class TV,class TRANSFORM> bool IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Lazy_Inside_Extended_Levelset(const TV& location,const T contour_value) const
 {
-    return object_space_implicit_object->Lazy_Inside_Extended_Levelset(Object_Space_Point(location),Object_Space_Length(contour_value));
+    return object_space_implicit_object->Lazy_Inside_Extended_Levelset(this->Object_Space_Point(location),this->Object_Space_Length(contour_value));
 }
 template<class TV,class TRANSFORM> bool IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Lazy_Inside_Extended_Levelset_And_Value(const TV& location,T& phi_value,const T contour_value) const
 {
-    bool result=object_space_implicit_object->Lazy_Inside_Extended_Levelset_And_Value(Object_Space_Point(location),phi_value,Object_Space_Length(contour_value));
-    phi_value=World_Space_Length(phi_value);
+    bool result=object_space_implicit_object->Lazy_Inside_Extended_Levelset_And_Value(this->Object_Space_Point(location),phi_value,this->Object_Space_Length(contour_value));
+    phi_value=this->World_Space_Length(phi_value);
     return result;
 }
 template<class TV,class TRANSFORM> bool IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Outside(const TV& location,const T thickness_over_two) const
 {
-    return object_space_implicit_object->Outside(Object_Space_Point(location),Object_Space_Length(thickness_over_two));
+    return object_space_implicit_object->Outside(this->Object_Space_Point(location),this->Object_Space_Length(thickness_over_two));
 }
 template<class TV,class TRANSFORM> bool IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Lazy_Outside(const TV& location,const T contour_value) const
 {
-    return object_space_implicit_object->Lazy_Outside(Object_Space_Point(location),Object_Space_Length(contour_value));
+    return object_space_implicit_object->Lazy_Outside(this->Object_Space_Point(location),this->Object_Space_Length(contour_value));
 }
 template<class TV,class TRANSFORM> bool IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Lazy_Outside_Extended_Levelset(const TV& location,const T contour_value) const
 {
-    return object_space_implicit_object->Lazy_Outside_Extended_Levelset(Object_Space_Point(location),Object_Space_Length(contour_value));
+    return object_space_implicit_object->Lazy_Outside_Extended_Levelset(this->Object_Space_Point(location),this->Object_Space_Length(contour_value));
 }
 template<class TV,class TRANSFORM> bool IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Lazy_Outside_Extended_Levelset_And_Value(const TV& location,T& phi_value,const T contour_value) const
 {
-    bool result=object_space_implicit_object->Lazy_Outside_Extended_Levelset_And_Value(Object_Space_Point(location),phi_value,Object_Space_Length(contour_value));
-    phi_value=World_Space_Length(phi_value);
+    bool result=object_space_implicit_object->Lazy_Outside_Extended_Levelset_And_Value(this->Object_Space_Point(location),phi_value,this->Object_Space_Length(contour_value));
+    phi_value=this->World_Space_Length(phi_value);
     return result;
 }
 template<class TV,class TRANSFORM> typename TV::SCALAR IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Min_Phi() const
 {
-    return World_Space_Length(object_space_implicit_object->Min_Phi());
+    return this->World_Space_Length(object_space_implicit_object->Min_Phi());
 }
 template<class TV,class TRANSFORM> TV IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Velocity(const TV& location) const
 {
-    return World_Space_Vector(object_space_implicit_object->Velocity(Object_Space_Point(location)));
+    return this->World_Space_Vector(object_space_implicit_object->Velocity(this->Object_Space_Point(location)));
 }
 template<class TV,class TRANSFORM> typename IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::T_SYMMETRIC_MATRIX IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Hessian(const TV& X) const
 {
-    return World_Space_Length_Hessian(object_space_implicit_object->Hessian(Object_Space_Point(X)));
+    return this->World_Space_Length_Hessian(object_space_implicit_object->Hessian(this->Object_Space_Point(X)));
 }
 template<class TV,class TRANSFORM> typename TV::SCALAR IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Integration_Step(const T phi) const
 {
-    return World_Space_Length(object_space_implicit_object->Integration_Step(Object_Space_Length(phi)));
+    return this->World_Space_Length(object_space_implicit_object->Integration_Step(this->Object_Space_Length(phi)));
 }
 template<class TV,class TRANSFORM> typename TV::SCALAR IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Minimum_Cell_Size() const
 {
-    return World_Space_Length(object_space_implicit_object->Minimum_Cell_Size());
+    return this->World_Space_Length(object_space_implicit_object->Minimum_Cell_Size());
 }
 template<class TV,class TRANSFORM> bool IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Intersection(RAY<TV>& ray,const T thickness) const
@@ -197,7 +197,7 @@ Intersection(RAY<TV>& ray,const T thickness) const
     RAY<TV> object_space_ray=Object_Space_Ray(ray);
     if(object_space_implicit_object->Intersection(object_space_ray,thickness)){
         ray.semi_infinite=false;
-        ray.t_max=World_Space_Length(object_space_ray.t_max);
+        ray.t_max=this->World_Space_Length(object_space_ray.t_max);
         ray.aggregate_id=object_space_ray.aggregate_id;
         return true;}
     else return false;
@@ -205,8 +205,8 @@ Intersection(RAY<TV>& ray,const T thickness) const
 template<class TV,class TRANSFORM> TV IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::
 Closest_Point_On_Boundary(const TV& location,const T tolerance,const int max_iterations,T* distance) const
 {
-    TV result=World_Space_Point(object_space_implicit_object->Closest_Point_On_Boundary(Object_Space_Point(location),Object_Space_Length(tolerance),max_iterations,distance));
-    if(distance) *distance=World_Space_Length(*distance);
+    TV result=this->World_Space_Point(object_space_implicit_object->Closest_Point_On_Boundary(this->Object_Space_Point(location),this->Object_Space_Length(tolerance),max_iterations,distance));
+    if(distance) *distance=this->World_Space_Length(*distance);
     return result;
 }
 template<class TV,class TRANSFORM> std::string IMPLICIT_OBJECT_TRANSFORMED<TV,TRANSFORM>::

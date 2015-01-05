@@ -39,16 +39,16 @@ template<class T_GRID> LEVELSET_3D<T_GRID>::
 template<class T_GRID> SYMMETRIC_MATRIX<typename T_GRID::SCALAR,3> LEVELSET_3D<T_GRID>::
 Hessian(const TV& X) const
 {
-    T one_over_dx=1/grid.dX.x,one_over_dy=1/grid.dX.y,one_over_dz=1/grid.dX.z;T two_phi_center=2*Phi(X);
-    T phi_xx=(Phi(TV(X.x+grid.dX.x,X.y,X.z))-two_phi_center+Phi(TV(X.x-grid.dX.x,X.y,X.z)))*sqr(one_over_dx),
-       phi_yy=(Phi(TV(X.x,X.y+grid.dX.y,X.z))-two_phi_center+Phi(TV(X.x,X.y-grid.dX.y,X.z)))*sqr(one_over_dy),
-       phi_zz=(Phi(TV(X.x,X.y,X.z+grid.dX.z))-two_phi_center+Phi(TV(X.x,X.y,X.z-grid.dX.z)))*sqr(one_over_dz),
-       phi_xy=(Phi(TV(X.x+grid.dX.x,X.y+grid.dX.y,X.z))-Phi(TV(X.x+grid.dX.x,X.y-grid.dX.y,X.z))
-                  -Phi(TV(X.x-grid.dX.x,X.y+grid.dX.y,X.z))+Phi(TV(X.x-grid.dX.x,X.y-grid.dX.y,X.z)))*(T).25*one_over_dx*one_over_dy,
-       phi_xz=(Phi(TV(X.x+grid.dX.x,X.y,X.z+grid.dX.z))-Phi(TV(X.x+grid.dX.x,X.y,X.z-grid.dX.z))
-                  -Phi(TV(X.x-grid.dX.x,X.y,X.z+grid.dX.z))+Phi(TV(X.x-grid.dX.x,X.y,X.z-grid.dX.z)))*(T).25*one_over_dx*one_over_dz,
-       phi_yz=(Phi(TV(X.x,X.y+grid.dX.y,X.z+grid.dX.z))-Phi(TV(X.x,X.y+grid.dX.y,X.z-grid.dX.z))
-                   -Phi(TV(X.x,X.y-grid.dX.y,X.z+grid.dX.z))+Phi(TV(X.x,X.y-grid.dX.y,X.z-grid.dX.z)))*(T).25*one_over_dy*one_over_dz;
+    T one_over_dx=1/grid.dX.x,one_over_dy=1/grid.dX.y,one_over_dz=1/grid.dX.z;T two_phi_center=2*this->Phi(X);
+    T phi_xx=(this->Phi(TV(X.x+grid.dX.x,X.y,X.z))-two_phi_center+this->Phi(TV(X.x-grid.dX.x,X.y,X.z)))*sqr(one_over_dx),
+       phi_yy=(this->Phi(TV(X.x,X.y+grid.dX.y,X.z))-two_phi_center+this->Phi(TV(X.x,X.y-grid.dX.y,X.z)))*sqr(one_over_dy),
+       phi_zz=(this->Phi(TV(X.x,X.y,X.z+grid.dX.z))-two_phi_center+this->Phi(TV(X.x,X.y,X.z-grid.dX.z)))*sqr(one_over_dz),
+       phi_xy=(this->Phi(TV(X.x+grid.dX.x,X.y+grid.dX.y,X.z))-this->Phi(TV(X.x+grid.dX.x,X.y-grid.dX.y,X.z))
+                  -this->Phi(TV(X.x-grid.dX.x,X.y+grid.dX.y,X.z))+this->Phi(TV(X.x-grid.dX.x,X.y-grid.dX.y,X.z)))*(T).25*one_over_dx*one_over_dy,
+       phi_xz=(this->Phi(TV(X.x+grid.dX.x,X.y,X.z+grid.dX.z))-this->Phi(TV(X.x+grid.dX.x,X.y,X.z-grid.dX.z))
+                  -this->Phi(TV(X.x-grid.dX.x,X.y,X.z+grid.dX.z))+this->Phi(TV(X.x-grid.dX.x,X.y,X.z-grid.dX.z)))*(T).25*one_over_dx*one_over_dz,
+       phi_yz=(this->Phi(TV(X.x,X.y+grid.dX.y,X.z+grid.dX.z))-this->Phi(TV(X.x,X.y+grid.dX.y,X.z-grid.dX.z))
+                   -this->Phi(TV(X.x,X.y-grid.dX.y,X.z+grid.dX.z))+this->Phi(TV(X.x,X.y-grid.dX.y,X.z-grid.dX.z)))*(T).25*one_over_dy*one_over_dz;
     return SYMMETRIC_MATRIX<T,3>(phi_xx,phi_xy,phi_xz,phi_yy,phi_yz,phi_zz);
 }
 //#####################################################################
@@ -57,9 +57,9 @@ Hessian(const TV& X) const
 template<class T_GRID> VECTOR<typename T_GRID::SCALAR,2> LEVELSET_3D<T_GRID>::
 Principal_Curvatures(const TV& X) const
 {
-    TV grad_phi=TV((Phi(TV(X.x+grid.dX.x,X.y,X.z))-Phi(TV(X.x-grid.dX.x,X.y,X.z)))/(2*grid.dX.x),
-                                     (Phi(TV(X.x,X.y+grid.dX.y,X.z))-Phi(TV(X.x,X.y-grid.dX.y,X.z)))/(2*grid.dX.y),
-                                     (Phi(TV(X.x,X.y,X.z+grid.dX.z))-Phi(TV(X.x,X.y,X.z-grid.dX.z)))/(2*grid.dX.z));
+    TV grad_phi=TV((this->Phi(TV(X.x+grid.dX.x,X.y,X.z))-this->Phi(TV(X.x-grid.dX.x,X.y,X.z)))/(2*grid.dX.x),
+                                     (this->Phi(TV(X.x,X.y+grid.dX.y,X.z))-this->Phi(TV(X.x,X.y-grid.dX.y,X.z)))/(2*grid.dX.y),
+                                     (this->Phi(TV(X.x,X.y,X.z+grid.dX.z))-this->Phi(TV(X.x,X.y,X.z-grid.dX.z)))/(2*grid.dX.z));
     TV N=grad_phi;T grad_phi_magnitude=N.Normalize();
     SYMMETRIC_MATRIX<T,3> P=(T)1-SYMMETRIC_MATRIX<T,3>::Outer_Product(N),M=SYMMETRIC_MATRIX<T,3>::Conjugate(P,Hessian(X))/grad_phi_magnitude;
     T trace=M.Trace();
@@ -143,7 +143,7 @@ Compute_Curvature(const TV& location) const
     ARRAY<T,TV_INT> phi_stencil(-1,1,-1,1,-1,1);
     for(int i=-1;i<=1;i++) for(int j=-1;j<=1;j++) for(int k=-1;k<=1;k++){
         TV phi_location=grid.dX.x*TV((T)i,0,0)+grid.dX.y*TV(0,(T)j,0)+grid.dX.z*TV(0,0,(T)k)+location;
-        phi_stencil(i,j,k)=Phi(phi_location);}
+        phi_stencil(i,j,k)=this->Phi(phi_location);}
     return Compute_Curvature(phi_stencil,VECTOR<int,3>(0,0,0));
 }
 //#####################################################################
@@ -313,17 +313,17 @@ Calculate_Triangulated_Surface_From_Marching_Tetrahedra(const T_GRID& tet_grid,T
     // calculate triangles
     for(i=1;i<tet_grid.counts.x;i++) for(int j=1;j<tet_grid.counts.y;j++) for(int k=1;k<tet_grid.counts.z;k++)
         if((i+j+k)%2 == 0){
-            Append_Triangles(triangulated_surface,edge(i,j,k)(1),edge(i,j,k)(2),edge(i,j,k)(3),edge(i,j,k)(6),edge(i,j,k)(4),edge(i,j,k)(5),Phi(tet_grid.X(i,j,k))); // bottom left
-            Append_Triangles(triangulated_surface,edge(i,j,k+1)(6),edge(i+1,j,k)(4),edge(i+1,j,k+1)(2),edge(i,j,k)(5),edge(i+1,j,k)(3),edge(i,j,k+1)(1),Phi(tet_grid.X(i+1,j+1,k+1))); // bottom right
-            Append_Triangles(triangulated_surface,edge(i,j+1,k)(1),edge(i+1,j,k)(2),edge(i+1,j+1,k)(3),edge(i,j,k)(6),edge(i+1,j,k)(4),edge(i,j+1,k)(5),Phi(tet_grid.X(i+1,j+1,k))); // top front
-            Append_Triangles(triangulated_surface,edge(i,j+1,k)(3),edge(i,j,k)(4),edge(i,j+1,k)(5),edge(i,j,k+1)(2),edge(i,j,k+1)(6),edge(i,j+1,k+1)(1),Phi(tet_grid.X(i,j+1,k))); // top back
-            Append_Triangles(triangulated_surface,edge(i,j,k)(6),edge(i,j+1,k)(5),edge(i,j,k)(4),edge(i+1,j,k)(4),edge(i,j,k+1)(6),edge(i,j,k)(5),Phi(tet_grid.X(i,j+1,k)));} // center
+            Append_Triangles(triangulated_surface,edge(i,j,k)(1),edge(i,j,k)(2),edge(i,j,k)(3),edge(i,j,k)(6),edge(i,j,k)(4),edge(i,j,k)(5),this->Phi(tet_grid.X(i,j,k))); // bottom left
+            Append_Triangles(triangulated_surface,edge(i,j,k+1)(6),edge(i+1,j,k)(4),edge(i+1,j,k+1)(2),edge(i,j,k)(5),edge(i+1,j,k)(3),edge(i,j,k+1)(1),this->Phi(tet_grid.X(i+1,j+1,k+1))); // bottom right
+            Append_Triangles(triangulated_surface,edge(i,j+1,k)(1),edge(i+1,j,k)(2),edge(i+1,j+1,k)(3),edge(i,j,k)(6),edge(i+1,j,k)(4),edge(i,j+1,k)(5),this->Phi(tet_grid.X(i+1,j+1,k))); // top front
+            Append_Triangles(triangulated_surface,edge(i,j+1,k)(3),edge(i,j,k)(4),edge(i,j+1,k)(5),edge(i,j,k+1)(2),edge(i,j,k+1)(6),edge(i,j+1,k+1)(1),this->Phi(tet_grid.X(i,j+1,k))); // top back
+            Append_Triangles(triangulated_surface,edge(i,j,k)(6),edge(i,j+1,k)(5),edge(i,j,k)(4),edge(i+1,j,k)(4),edge(i,j,k+1)(6),edge(i,j,k)(5),this->Phi(tet_grid.X(i,j+1,k)));} // center
         else{
-            Append_Triangles(triangulated_surface,edge(i,j,k)(6),edge(i+1,j,k)(2),edge(i+1,j,k)(4),edge(i,j,k)(1),edge(i+1,j,k)(3),edge(i,j,k)(5),Phi(tet_grid.X(i+1,j+1,k))); // bottom front
-            Append_Triangles(triangulated_surface,edge(i,j,k)(5),edge(i,j,k)(4),edge(i,j,k)(3),edge(i,j,k+1)(6),edge(i,j,k+1)(2),edge(i,j,k+1)(1),Phi(tet_grid.X(i,j,k))); // bottom back
-            Append_Triangles(triangulated_surface,edge(i,j,k)(6),edge(i,j,k)(2),edge(i,j,k)(4),edge(i,j+1,k)(1),edge(i,j+1,k)(3),edge(i,j+1,k)(5),Phi(tet_grid.X(i,j,k))); // top left
-            Append_Triangles(triangulated_surface,edge(i,j+1,k)(5),edge(i,j+1,k+1)(1),edge(i,j,k+1)(6),edge(i+1,j+1,k)(3),edge(i+1,j,k+1)(2),edge(i+1,j,k)(4),Phi(tet_grid.X(i,j+1,k+1))); // top right
-            Append_Triangles(triangulated_surface,edge(i,j,k)(6),edge(i,j,k)(4),edge(i,j,k)(5),edge(i,j+1,k)(5),edge(i,j,k+1)(6),edge(i+1,j,k)(4),Phi(tet_grid.X(i,j,k)));} // center
+            Append_Triangles(triangulated_surface,edge(i,j,k)(6),edge(i+1,j,k)(2),edge(i+1,j,k)(4),edge(i,j,k)(1),edge(i+1,j,k)(3),edge(i,j,k)(5),this->Phi(tet_grid.X(i+1,j+1,k))); // bottom front
+            Append_Triangles(triangulated_surface,edge(i,j,k)(5),edge(i,j,k)(4),edge(i,j,k)(3),edge(i,j,k+1)(6),edge(i,j,k+1)(2),edge(i,j,k+1)(1),this->Phi(tet_grid.X(i,j,k))); // bottom back
+            Append_Triangles(triangulated_surface,edge(i,j,k)(6),edge(i,j,k)(2),edge(i,j,k)(4),edge(i,j+1,k)(1),edge(i,j+1,k)(3),edge(i,j+1,k)(5),this->Phi(tet_grid.X(i,j,k))); // top left
+            Append_Triangles(triangulated_surface,edge(i,j+1,k)(5),edge(i,j+1,k+1)(1),edge(i,j,k+1)(6),edge(i+1,j+1,k)(3),edge(i+1,j,k+1)(2),edge(i+1,j,k)(4),this->Phi(tet_grid.X(i,j+1,k+1))); // top right
+            Append_Triangles(triangulated_surface,edge(i,j,k)(6),edge(i,j,k)(4),edge(i,j,k)(5),edge(i,j+1,k)(5),edge(i,j,k+1)(6),edge(i+1,j,k)(4),this->Phi(tet_grid.X(i,j,k)));} // center
     triangulated_surface.mesh.number_nodes=triangulated_surface.particles.array_collection->Size();
     triangulated_surface.Remove_Degenerate_Triangles();
 }
@@ -333,7 +333,7 @@ Calculate_Triangulated_Surface_From_Marching_Tetrahedra(const T_GRID& tet_grid,T
 template<class T_GRID> int LEVELSET_3D<T_GRID>::
 If_Zero_Crossing_Add_Particle(TRIANGULATED_SURFACE<T>& triangulated_surface,const TV& x1,const TV& x2) const
 {
-    int index=0;T phi1=Phi(x1),phi2=Phi(x2);
+    int index=0;T phi1=this->Phi(x1),phi2=this->Phi(x2);
     if(LEVELSET_UTILITIES<T>::Interface(phi1,phi2)){
         index=triangulated_surface.particles.array_collection->Add_Element();
         triangulated_surface.particles.X(index)=LINEAR_INTERPOLATION<T,TV>::Linear(x1,x2,LEVELSET_UTILITIES<T>::Theta(phi1,phi2));}
@@ -378,9 +378,9 @@ Normal(const VECTOR<T,3>& location) const
 {
     if(normals) return normal_interpolation->Clamped_To_Array(grid,*normals,location).Normalized();
     else if(custom_normal_computation) return custom_normal_computation->Compute_Normal(*this,location);
-    else return VECTOR<T,3>((Phi(VECTOR<T,3>(location.x+grid.dX.x,location.y,location.z))-Phi(VECTOR<T,3>(location.x-grid.dX.x,location.y,location.z)))/(2*grid.dX.x),
-        (Phi(VECTOR<T,3>(location.x,location.y+grid.dX.y,location.z))-Phi(VECTOR<T,3>(location.x,location.y-grid.dX.y,location.z)))/(2*grid.dX.y),
-        (Phi(VECTOR<T,3>(location.x,location.y,location.z+grid.dX.z))-Phi(VECTOR<T,3>(location.x,location.y,location.z-grid.dX.z)))/(2*grid.dX.z)).Normalized();
+    else return VECTOR<T,3>((this->Phi(VECTOR<T,3>(location.x+grid.dX.x,location.y,location.z))-this->Phi(VECTOR<T,3>(location.x-grid.dX.x,location.y,location.z)))/(2*grid.dX.x),
+        (this->Phi(VECTOR<T,3>(location.x,location.y+grid.dX.y,location.z))-this->Phi(VECTOR<T,3>(location.x,location.y-grid.dX.y,location.z)))/(2*grid.dX.y),
+        (this->Phi(VECTOR<T,3>(location.x,location.y,location.z+grid.dX.z))-this->Phi(VECTOR<T,3>(location.x,location.y,location.z-grid.dX.z)))/(2*grid.dX.z)).Normalized();
 }
 //#####################################################################
 // Function Extended_Normal
@@ -389,9 +389,9 @@ template<class T_GRID> VECTOR<typename T_GRID::SCALAR,3> LEVELSET_3D<T_GRID>::
 Extended_Normal(const VECTOR<T,3>& location) const
 {
     if(normals) return normal_interpolation->Clamped_To_Array(grid,*normals,grid.Clamp(location)).Normalized();
-    else return VECTOR<T,3>((Extended_Phi(VECTOR<T,3>(location.x+grid.dX.x,location.y,location.z))-Extended_Phi(VECTOR<T,3>(location.x-grid.dX.x,location.y,location.z)))/(2*grid.dX.x),
-        (Extended_Phi(VECTOR<T,3>(location.x,location.y+grid.dX.y,location.z))-Extended_Phi(VECTOR<T,3>(location.x,location.y-grid.dX.y,location.z)))/(2*grid.dX.y),
-        (Extended_Phi(VECTOR<T,3>(location.x,location.y,location.z+grid.dX.z))-Extended_Phi(VECTOR<T,3>(location.x,location.y,location.z-grid.dX.z)))/(2*grid.dX.z)).Normalized();
+    else return VECTOR<T,3>((this->Extended_Phi(VECTOR<T,3>(location.x+grid.dX.x,location.y,location.z))-this->Extended_Phi(VECTOR<T,3>(location.x-grid.dX.x,location.y,location.z)))/(2*grid.dX.x),
+        (this->Extended_Phi(VECTOR<T,3>(location.x,location.y+grid.dX.y,location.z))-this->Extended_Phi(VECTOR<T,3>(location.x,location.y-grid.dX.y,location.z)))/(2*grid.dX.y),
+        (this->Extended_Phi(VECTOR<T,3>(location.x,location.y,location.z+grid.dX.z))-this->Extended_Phi(VECTOR<T,3>(location.x,location.y,location.z-grid.dX.z)))/(2*grid.dX.z)).Normalized();
 }
 //#####################################################################
 template class LEVELSET_3D<GRID<VECTOR<float,3> > >;
