@@ -60,8 +60,8 @@ public:
     else return VOLUMETRIC_SHADER<T>::Henyey_Greenstein_Phase_Function(incoming,outgoing,phase_function_g);}
 
     TV Inverse_Phase_Direction(const TV& incoming)
-    {if(isotropic_scattering) return Inverse_Isotropic_Phase_Direction(incoming);
-    else return Inverse_Henyey_Greenstein_Phase_Direction(incoming,phase_function_g);}
+    {if(isotropic_scattering) return this->Inverse_Isotropic_Phase_Direction(incoming);
+    else return this->Inverse_Henyey_Greenstein_Phase_Direction(incoming,phase_function_g);}
     
     void Use_Empty_Implicit_Surface(const IMPLICIT_OBJECT<TV>& empty_implicit_surface_input,const bool use_empty_implicit_surface_for_light_attenuation_input=true)
     {empty_implicit_surface=&empty_implicit_surface_input;supports_photon_mapping=false;use_empty_implicit_surface_for_light_attenuation=use_empty_implicit_surface_for_light_attenuation_input;}

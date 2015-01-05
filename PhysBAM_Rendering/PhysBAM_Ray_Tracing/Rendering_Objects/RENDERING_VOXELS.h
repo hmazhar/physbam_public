@@ -30,25 +30,25 @@ public:
     {}
 
     bool Intersection(RAY<VECTOR<T,3> >& ray)  const PHYSBAM_OVERRIDE
-    {RAY<VECTOR<T,3> > object_space_ray=Object_Space_Ray(ray);
+    {RAY<VECTOR<T,3> > object_space_ray=this->Object_Space_Ray(ray);
     bool box_intersection=false;
     if(INTERSECTION::Intersects(object_space_ray,box)){box_intersection=true;ray.semi_infinite=false;ray.t_max=object_space_ray.t_max;ray.aggregate_id=object_space_ray.aggregate_id;}
     return box_intersection;}
 
     bool Get_Intersection_Range(const RAY<VECTOR<T,3> >& ray,T& start_t,T& end_t) const PHYSBAM_OVERRIDE
-    {return INTERSECTION::Get_Intersection_Range(Object_Space_Ray(ray),box,start_t,end_t);}
+    {return INTERSECTION::Get_Intersection_Range(this->Object_Space_Ray(ray),box,start_t,end_t);}
 
     VECTOR<T,3> Normal(const VECTOR<T,3>& location,const int aggregate=0) const PHYSBAM_OVERRIDE
-    {return World_Space_Vector(box.Normal(aggregate));}
+    {return this->World_Space_Vector(box.Normal(aggregate));}
 
     bool Inside(const VECTOR<T,3>& location) const PHYSBAM_OVERRIDE
-    {return box.Inside(Object_Space_Point(location),small_number);}
+    {return box.Inside(this->Object_Space_Point(location),small_number);}
 
     bool Outside(const VECTOR<T,3>& location) const PHYSBAM_OVERRIDE
-    {return box.Outside(Object_Space_Point(location),small_number);}
+    {return box.Outside(this->Object_Space_Point(location),small_number);}
 
     bool Boundary(const VECTOR<T,3>& location) const PHYSBAM_OVERRIDE
-    {return box.Boundary(Object_Space_Point(location),small_number);}
+    {return box.Boundary(this->Object_Space_Point(location),small_number);}
 
     void Preprocess_Efficiency_Structures(RENDER_WORLD<T>& world) PHYSBAM_OVERRIDE
     {if(precompute_single_scattering) Precompute_Light_Data(true,world);}
