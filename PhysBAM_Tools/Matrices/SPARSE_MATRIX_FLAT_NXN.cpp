@@ -424,9 +424,9 @@ Conjugate_With_Diagonal_Matrix(VECTOR_ND<T>& x)
 //    output_stream<<std::endl;}
 //return output_stream;}
 ////#####################################################################
-//template class SPARSE_MATRIX_FLAT_NXN<float>;
+template class SPARSE_MATRIX_FLAT_NXN<float>;
 //template std::ostream& operator<<(std::ostream&,const SPARSE_MATRIX_FLAT_NXN<float>&);
-//#ifndef COMPILE_WITHOUT_DOUBLE_SUPPORT
-//template class SPARSE_MATRIX_FLAT_NXN<double>;
+#ifndef COMPILE_WITHOUT_DOUBLE_SUPPORT
+template class SPARSE_MATRIX_FLAT_NXN<double>;
 //template std::ostream& operator<<(std::ostream&,const SPARSE_MATRIX_FLAT_NXN<double>&);
-//#endif
+#endif
